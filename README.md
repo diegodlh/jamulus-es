@@ -1,5 +1,7 @@
 # jamulus-es-wiki
-Este repositorio aloja la versión en español de la wiki de Jamulus. Ésta es fundamentalmente una traducción de la [documentación oficial en inglés](https://github.com/corrados/jamulus/wiki). Esto fue discutido [acá](https://github.com/corrados/jamulus/issues/77#issuecomment-687216471).
+Este repositorio aloja la versión en español de la wiki de Jamulus. Ésta es fundamentalmente una traducción de la [documentación oficial en inglés](https://github.com/corrados/jamulus/wiki), gentilmente contribuida por el usuario @ignotus666, quien la mantiene junto a otrxs colaboradrxs.
+
+Esto fue discutido [acá](https://github.com/corrados/jamulus/issues/77#issuecomment-687216471).
 
 ## Procedimiento
 Para iniciar esta wiki, se siguieron estos pasos:
