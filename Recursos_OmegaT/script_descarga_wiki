@@ -1,0 +1,17 @@
+﻿#!/bin/bash
+
+#Mira si existe la carpeta jamulus.wiki y si es así elimínala:
+if [ -d ruta/a/proyecto/OmegaT/jamulus/source/jamulus.wiki ]
+
+then
+
+    rm -rf ruta/a/proyecto/OmegaT/jamulus/source/jamulus.wiki
+
+fi
+
+#Navega hasta la carpeta de Source y descarga allí la wiki:
+cd ruta/a/proyecto/OmegaT/jamulus/source
+
+git clone https://github.com/corrados/jamulus.wiki.git
+
+
