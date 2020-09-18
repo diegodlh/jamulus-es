@@ -12,4 +12,5 @@ Por otro, he incluido un script que descarga la wiki en inglés a la carpeta 'so
 para Jamulus. Antes de usarlo debes modificar las rutas para que apunten al directorio correcto en tu sistema. 
 También asegúrate de que le das permiso de ejecución al script.
 Con la memoria al día y tras descargar la última versión de la wiki en inglés con el script, podrás ver fácilmente 
-cuáles han sido los últimos cambios para traducirlos. Tradúcelos en OmegaT y luego copia+pega el texto nuevo a la wiki-es.
+cuáles han sido los últimos cambios para traducirlos (Herramientas -> Estadísticas). Tradúcelos en OmegaT y luego 
+copia+pega el texto nuevo a la wiki-es.
