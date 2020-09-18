@@ -1,8 +1,15 @@
-En este directorio hay algunos recursos para traducir textos de Jamulus en OmegaT. Para que OmegaT pueda procesar correctamente los archivos .md, es necesario instalar los filtros de Okapi, disponibles aquí:
+En este directorio hay algunos recursos para traducir textos de Jamulus en OmegaT. Para que OmegaT pueda procesar 
+correctamente los archivos .md, es necesario instalar los filtros de Okapi, disponibles aquí:
 
 https://okapiframework.org/wiki/index.php?title=Okapi_Filters_Plugin_for_OmegaT
 
-Por un lado está la memoria de traducción. La segmentación está configurada a nivel de párrafo. Lo ideal sería que tras realizar una traducción, subiéramos aquí la memoria actualizada para que la tengamos todos al día y así poder identificar los textos pendientes de traducir.
+Por un lado está la memoria de traducción. La segmentación está configurada a nivel de párrafo. Descarga el archivo
+.tmx y cópialo a la carpeta tm/auto del proyecto de Jamulus que hayas creado.
+Lo ideal sería que tras realizar una traducción, subiéramos aquí la memoria actualizada para que la tengamos 
+todos al día y así poder identificar los textos pendientes de traducir.
 
-Por otro, he incluido un script que descarga la wiki en inglés a la carpeta 'source' del proyecto que crees en OmegaT para Jamulus. Antes de usarlo debes modificar las rutas para que apunten al directorio correcto en tu sistema. También asegúrate de que le das permiso de ejecución al script.
-Con la memoria al día y tras descargar la última versión de la wiki en inglés con el script, podrás ver fácilmente cuáles han sido los últimos cambios para traducirlos. Tradúcelos en OmegaT y luego copia+pega el texto nuevo a la wiki-es.
+Por otro, he incluido un script que descarga la wiki en inglés a la carpeta 'source' del proyecto que crees en OmegaT 
+para Jamulus. Antes de usarlo debes modificar las rutas para que apunten al directorio correcto en tu sistema. 
+También asegúrate de que le das permiso de ejecución al script.
+Con la memoria al día y tras descargar la última versión de la wiki en inglés con el script, podrás ver fácilmente 
+cuáles han sido los últimos cambios para traducirlos. Tradúcelos en OmegaT y luego copia+pega el texto nuevo a la wiki-es.
