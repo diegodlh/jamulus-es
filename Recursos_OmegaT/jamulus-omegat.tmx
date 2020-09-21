@@ -6,6 +6,196 @@
 <!-- Default translations -->
     <tu>
       <tuv lang="en-GB">
+        <seg>#!/bin/sh
+# set DISTRO either to "Ubuntu", "Debian" or "Fedora"
+DISTRO="Debian"
+LINVERSION="10.6"</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T080047Z" creationid="daryl" creationdate="20200921T080047Z">
+        <seg>#!/bin/sh
+# set DISTRO either to "Ubuntu", "Debian" or "Fedora"
+DISTRO="Debian"
+LINVERSION="10.6"</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>#!/bin/sh
+# set DISTRO either to "Ubuntu", "Debian" or "Fedora"
+DISTRO="Ubuntu"
+LINVERSION="18.04"
+
+# Get Jamulus Release Name with "curl" and "grep"  
+R=`curl -s https://api.github.com/repos/corrados/jamulus/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'` 
+echo "Jamulus Installation Script for $DISTRO $LINVERSION"
+echo "Release: $R"
+INSTALLJAMULUS="no"
+while true; do
+    read -p "Do you wish to install Jamulus on $DISTRO $LINVERSION? (y/n) " yn
+    case $yn in
+        [Yy]* ) 
+           echo "Start Installation $DISTRO $LINVERSION"
+           echo "(1) Fetch Release $R from GitHub"
+           wget https://github.com/corrados/jamulus/archive/$R.tar.gz 
+           echo "(2) Extract Source Code for Jamulus Release $R from GitHub"
+           tar -xvf $R.tar.gz
+           echo "(3) Delete ${R}.tar.gz from GitHub"
+           rm $R.tar.gz
+           echo "(4) Update Repository"
+           sudo apt-get update
+           INSTALLJAMULUS="yes" 
+           break;;
+        [Nn]* ) 
+           echo "Cancelled Jamulus Installation on $DISTRO $LINVERSION"
+           exit;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+# echo "Check Variable: $INSTALLJAMULUS"
+	
+if [ "$INSTALLJAMULUS" = "yes" ]; then     
+	echo "(5) Install Build Essentials for $DISTRO"
+	
+	if [ "$DISTRO"  = "Ubuntu" ]
+	then  
+		      echo "Installation for $DISTRO" 
+		      sudo apt-get install cmake qmake gcc g++ 
+		      sudo apt-get install build-essential qt5-qmake qtdeclarative5-dev qt5-default qttools5-dev-tools libjack-jackd2-dev 
+		      sudo apt-get install qjackctl
+                      if [ "$LINVERSION"  = "18.4" ]
+                      then
+                          echo "Perform Installation Specifics for $DISTRO Version $DISTRO" 
+                      fi  
+	
+  	elif [ "$DISTRO" = "Debian" ]
+	then    
+			  sudo apt-get install build-essential qtdeclarative5-dev qt5-default qttools5-dev-tools libjack-jackd2-dev 
+			  sudo apt-get install qjackctl
+	elif [ "$DISTRO" = "Fedora" ]
+	then    
+			  sudo dnf install qt5-qtdeclarative-devel jack-audio-connection-kit-dbus jack-audio-connection-kit-devel 
+			  sudo dnf install qjackctl
+	fi
+           
+	echo "(6) Compile Jamulus $R"
+	echo "Change to Directory jamulus-$R" 
+	cd "jamulus-$R"
+	# ls
+	qmake Jamulus.pro
+	make clean
+        make
+        sudo make install
+        echo "Compilation DONE"
+        cd ..
+        echo "(6) Delete the Source Files after Installation"
+        rm -R "jamulus-$R"
+           
+else
+
+	echo "Installation cancelled"
+
+fi</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T081438Z" creationid="daryl" creationdate="20200921T081438Z">
+        <seg>#!/bin/sh
+# configura DISTRO como "Ubuntu", "Debian" o "Fedora"
+DISTRO="Ubuntu"
+LINVERSION="18.04"
+
+# Obtén el nombre de la versión de Jamulus con "curl" y "grep"  
+R=`curl -s https://api.github.com/repos/corrados/jamulus/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'` 
+echo "Script de instalación de Jamulus para $DISTRO $LINVERSION"
+echo "Release: $R"
+INSTALLJAMULUS="no"
+while true; do
+    read -p "Desea instalar Jamulus en $DISTRO $LINVERSION? (y/n) " yn
+    case $yn in
+        [Yy]* ) 
+           echo "Comienza la instalación $DISTRO $LINVERSION"
+           echo "(1) Fetch Release $R from GitHub"
+           wget https://github.com/corrados/jamulus/archive/$R.tar.gz 
+           echo "(2) Extract Source Code for Jamulus Release $R from GitHub"
+           tar -xvf $R.tar.gz
+           echo "(3) Delete ${R}.tar.gz from GitHub"
+           rm $R.tar.gz
+           echo "(4) Update Repository"
+           sudo apt-get update
+           INSTALLJAMULUS="yes" 
+           break;;
+        [Nn]* ) 
+           echo "Instalación de Jamulus cancelada en $DISTRO $LINVERSION"
+           exit;;
+        * ) echo "Por favor responda sí o no.";;
+    esac
+done
+
+# echo "Check Variable: $INSTALLJAMULUS"
+	
+if [ "$INSTALLJAMULUS" = "yes" ]; then     
+	echo "(5) Install Build Essentials for $DISTRO"
+	
+	if [ "$DISTRO"  = "Ubuntu" ]
+	then  
+		      echo "Instalación para $DISTRO" 
+		      sudo apt-get install cmake qmake gcc g++ 
+		      sudo apt-get install build-essential qt5-qmake qtdeclarative5-dev qt5-default qttools5-dev-tools libjack-jackd2-dev 
+		      sudo apt-get install qjackctl
+                      if [ "$LINVERSION"  = "18.4" ]
+                      then
+                          echo "Perform Installation Specifics for $DISTRO Version $DISTRO" 
+                      fi  
+	
+  	elif [ "$DISTRO" = "Debian" ]
+	then    
+			  sudo apt-get install build-essential qtdeclarative5-dev qt5-default qttools5-dev-tools libjack-jackd2-dev 
+			  sudo apt-get install qjackctl
+	elif [ "$DISTRO" = "Fedora" ]
+	then    
+			  sudo dnf install qt5-qtdeclarative-devel jack-audio-connection-kit-dbus jack-audio-connection-kit-devel 
+			  sudo dnf install qjackctl
+	fi
+           
+	echo "(6) Compile Jamulus $R"
+	echo "Change to Directory jamulus-$R" 
+	cd "jamulus-$R"
+	# ls
+	qmake Jamulus.pro
+	make clean
+        make
+        sudo make install
+        echo "Compilación COMPLETA"
+        cd ..
+        echo "(6) Elimina los Archivos Fuente tras la Inatalación"
+        rm -R "jamulus-$R"
+           
+else
+
+	echo "Instalación cancelada"
+
+fi</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 11.04
+Release:        11.04
+Codename:       natty</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083926Z" creationid="daryl" creationdate="20200921T083926Z">
+        <seg>$ lsb_release -a
+No LSB modules are available.
+Distributor ID: Ubuntu
+Description:    Ubuntu 11.04
+Release:        11.04
+Codename:       natty</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>%</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -78,14 +268,6 @@
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>(See also  &lt;g1&gt;Command Line Options&lt;/g1&gt;)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052830Z" creationid="daryl" creationdate="20200918T052830Z">
-        <seg>(Ver también &lt;g1&gt;Opciones de Línea de Comandos&lt;/g1&gt;)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>(default)</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -110,6 +292,16 @@
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>** Settings for Jack Audio Connection Kit**
+The exact settings for Jack will depend on what your audio interface/sound card is capable of.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082437Z" creationid="daryl" creationdate="20200921T082437Z">
+        <seg>** Configuración para Jack Audio Connection Kit**
+La configuración exacta de Jack dependerá de lo que es capaz tu interfaz/tarjeta de audio.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>,</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055358Z" creationid="daryl" creationdate="20200918T055358Z">
@@ -130,406 +322,6 @@
       </tuv>
       <tuv lang="es-ES">
         <seg>, donde</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--centralserver</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053036Z" creationid="daryl" creationdate="20200918T053036Z">
-        <seg>--centralserver</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--clientname</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053140Z" creationid="daryl" creationdate="20200918T053140Z">
-        <seg>--clientname</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--connect</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053031Z" creationid="daryl" creationdate="20200918T053031Z">
-        <seg>--connect</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--ctrlmidich</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053136Z" creationid="daryl" creationdate="20200918T053136Z">
-        <seg>--ctrlmidich</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--discononquit</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053035Z" creationid="daryl" creationdate="20200918T053035Z">
-        <seg>--discononquit</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--fastupdate</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053041Z" creationid="daryl" creationdate="20200918T053041Z">
-        <seg>--fastupdate</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--help</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053045Z" creationid="daryl" creationdate="20200918T053045Z">
-        <seg>--help</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--htmlstatus</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053059Z" creationid="daryl" creationdate="20200918T053059Z">
-        <seg>--htmlstatus</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--inifile</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053049Z" creationid="daryl" creationdate="20200918T053049Z">
-        <seg>--inifile</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--licence</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053057Z" creationid="daryl" creationdate="20200918T053057Z">
-        <seg>--licence</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--listfilter</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053037Z" creationid="daryl" creationdate="20200918T053037Z">
-        <seg>--listfilter</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--log</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053054Z" creationid="daryl" creationdate="20200918T053054Z">
-        <seg>--log</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--multithreading</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053125Z" creationid="daryl" creationdate="20200918T053125Z">
-        <seg>--multithreading</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--mutestream</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053102Z" creationid="daryl" creationdate="20200918T053102Z">
-        <seg>--mutestream</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--nogui</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053103Z" creationid="daryl" creationdate="20200918T053103Z">
-        <seg>--nogui</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--nojackconnect</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053052Z" creationid="daryl" creationdate="20200918T053052Z">
-        <seg>--nojackconnect</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--notranslation</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053122Z" creationid="daryl" creationdate="20200918T053122Z">
-        <seg>--notranslation</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--numchannels</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053127Z" creationid="daryl" creationdate="20200918T053127Z">
-        <seg>--numchannels</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--pingservers</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053043Z" creationid="daryl" creationdate="20200918T053043Z">
-        <seg>--pingservers</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--port</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053113Z" creationid="daryl" creationdate="20200918T053113Z">
-        <seg>--port</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--recording</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053116Z" creationid="daryl" creationdate="20200918T053116Z">
-        <seg>--recording</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--server</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053121Z" creationid="daryl" creationdate="20200918T053121Z">
-        <seg>--server</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--serverinfo</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053105Z" creationid="daryl" creationdate="20200918T053105Z">
-        <seg>--serverinfo</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--servername</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053020Z" creationid="daryl" creationdate="20200918T053020Z">
-        <seg>--servername</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--startminimized</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053134Z" creationid="daryl" creationdate="20200918T053134Z">
-        <seg>--startminimized</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>--welcomemessage</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053129Z" creationid="daryl" creationdate="20200918T053129Z">
-        <seg>--welcomemessage</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-F</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053040Z" creationid="daryl" creationdate="20200918T053040Z">
-        <seg>-F</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-L</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053056Z" creationid="daryl" creationdate="20200918T053056Z">
-        <seg>-L</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-M</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053101Z" creationid="daryl" creationdate="20200918T053101Z">
-        <seg>-M</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-R</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053115Z" creationid="daryl" creationdate="20200918T053115Z">
-        <seg>-R</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-T</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053123Z" creationid="daryl" creationdate="20200918T053123Z">
-        <seg>-T</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-a</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053019Z" creationid="daryl" creationdate="20200918T053019Z">
-        <seg>-a</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-c</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053023Z" creationid="daryl" creationdate="20200918T053023Z">
-        <seg>-c</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-d</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053034Z" creationid="daryl" creationdate="20200918T053034Z">
-        <seg>-d</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-e</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053036Z" creationid="daryl" creationdate="20200918T053036Z">
-        <seg>-e</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-f</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053037Z" creationid="daryl" creationdate="20200918T053037Z">
-        <seg>-f</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-g</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053042Z" creationid="daryl" creationdate="20200918T053042Z">
-        <seg>-g</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-h,-?</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053045Z" creationid="daryl" creationdate="20200918T053045Z">
-        <seg>-h,-?</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-i</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053048Z" creationid="daryl" creationdate="20200918T053048Z">
-        <seg>-i</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-j</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053050Z" creationid="daryl" creationdate="20200918T053050Z">
-        <seg>-j</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-l</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053053Z" creationid="daryl" creationdate="20200918T053053Z">
-        <seg>-l</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-m</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053058Z" creationid="daryl" creationdate="20200918T053058Z">
-        <seg>-m</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-n</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053103Z" creationid="daryl" creationdate="20200918T053103Z">
-        <seg>-n</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-o</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053104Z" creationid="daryl" creationdate="20200918T053104Z">
-        <seg>-o</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-p</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053113Z" creationid="daryl" creationdate="20200918T053113Z">
-        <seg>-p</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-s</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053120Z" creationid="daryl" creationdate="20200918T053120Z">
-        <seg>-s</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-t</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053122Z" creationid="daryl" creationdate="20200918T053122Z">
-        <seg>-t</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-u</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053126Z" creationid="daryl" creationdate="20200918T053126Z">
-        <seg>-u</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-w</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053128Z" creationid="daryl" creationdate="20200918T053128Z">
-        <seg>-w</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>-z</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053133Z" creationid="daryl" creationdate="20200918T053133Z">
-        <seg>-z</seg>
       </tuv>
     </tu>
     <tu>
@@ -894,10 +686,10 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>&lt;g1&gt;Afterwards &lt;g2&gt;download and run the Jamulus Windows installer&lt;/g2&gt;&lt;/g1&gt; (or &lt;g3&gt;compile Jamulus yourself&lt;/g3&gt; if you feel inclined).</seg>
+        <seg>&lt;g1&gt;Afterwards&lt;/g1&gt; &lt;g2&gt;download and run the Jamulus Windows installer&lt;/g2&gt;</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053928Z" creationid="daryl" creationdate="20200918T053928Z">
-        <seg>&lt;g1&gt;Después &lt;g2&gt;descarga y ejecuta el instalador para Windows de Jamulus&lt;/g2&gt;&lt;/g1&gt; (o &lt;g3&gt;compila Jamulus&lt;/g3&gt; si quieres).</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T091236Z" creationid="daryl" creationdate="20200921T091236Z">
+        <seg>&lt;g1&gt;Después&lt;/g1&gt; &lt;g2&gt;descarga y ejecuta el instalador para Windows de Jamulus&lt;/g2&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -950,6 +742,32 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;DISTRO="Debian&lt;/g1&gt; for a Debian or Raspian Linux</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075335Z" creationid="daryl" creationdate="20200921T075335Z">
+        <seg>&lt;g1&gt;DISTRO="Debian&lt;/g1&gt; para Debian o Raspian Linux</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;DISTRO="Fedora&lt;/g1&gt; for a Fedora Linux
+Furthermore if the installation is dependent of the release the variable &lt;g2&gt;LINVERSION&lt;/g2&gt; is introduced but is currently not used. In the Ubuntu if statement there is an example how version dependent installation calls can be performed.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075614Z" creationid="daryl" creationdate="20200921T075614Z">
+        <seg>&lt;g1&gt;DISTRO="Fedora&lt;/g1&gt; para Fedora Linux
+Además, si la instalación depende de la versión, entonces la variable &lt;g2&gt;LINVERSION&lt;/g2&gt; se introduce pero actualmente no se usa. En la declaración`if` de Ubuntu hay un ejemplo de cómo se pueden ejecutar comandos de instalación dependientes de la versión.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;DISTRO="Ubuntu&lt;/g1&gt; for a Ubuntu or Linux Mint</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075328Z" creationid="daryl" creationdate="20200921T075119Z">
+        <seg>&lt;g1&gt;DISTRO="Ubuntu&lt;/g1&gt; para Ubuntu o Linux Mint</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;Download Jamulus&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200415T195355Z" creationid="daryl" creationdate="20200415T195355Z">
@@ -982,6 +800,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;For Macintosh users&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204516Z" creationid="daryl" creationdate="20200919T204516Z">
+        <seg>&lt;g1&gt;Para usuarios de Macintosh&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;For Raspberry Pi&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052540Z" creationid="daryl" creationdate="20200918T052540Z">
@@ -994,6 +820,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052539Z" creationid="daryl" creationdate="20200918T052539Z">
         <seg>&lt;g1&gt;Para usuarios de Windows o Macintosh&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;For Windows users&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204515Z" creationid="daryl" creationdate="20200919T204515Z">
+        <seg>&lt;g1&gt;Para usuarios de Windows&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1026,6 +860,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200415T201317Z" creationid="daryl" creationdate="20200415T201317Z">
         <seg>&lt;g1&gt;Configuración de Hardware&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Here's how millions of people are using Jamulus to play, sing and teach music with other people in real time, all over the world:&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204544Z" creationid="daryl" creationdate="20200919T204544Z">
+        <seg>&lt;g1&gt;Así es cómo millones de personas utilizan Jamulus para tocar, cantar y enseñar música con otras personas en tiempo real, por todo el mundo:&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1206,6 +1048,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Home&lt;/g1&gt; \&gt; Using Jamulus</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204428Z" creationid="daryl" creationdate="20200919T204428Z">
+        <seg>&lt;g1&gt;Inicio&lt;/g1&gt; \&gt; Uso de Jamulus</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;Home&lt;/g1&gt; \&gt; Using Jamulus: You're outdated</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055403Z" creationid="daryl" creationdate="20200918T055403Z">
@@ -1334,10 +1184,26 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Jamulus works on the client server principle. Everybody’s audio is sent to a server, mixed and processed there. Afterwards the audio is sent to every client. If a server is made public and registered on a central server, its information will be broadcasted to all clients.&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T065131Z" creationid="daryl" creationdate="20200921T065131Z">
+        <seg>&lt;g1&gt;Jamulus works on the client server principle. Everybody’s audio is sent to a server, mixed and processed there. Afterwards the audio is sent to every client. If a server is made public and registered on a central server, its information will be broadcasted to all clients.&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;Jazz&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052623Z" creationid="daryl" creationdate="20200918T052623Z">
         <seg>&lt;g1&gt;Jazz&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Les francophones peuvent consulter une petite doc &lt;g2&gt;en français ici&lt;/g2&gt;.&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204457Z" creationid="daryl" creationdate="20200919T204457Z">
+        <seg>&lt;g1&gt;Les francophones peuvent consulter une petite doc &lt;g2&gt;en français ici&lt;/g2&gt;.&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1398,6 +1264,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;ONLY. LISTEN. TO. THE. SIGNAL. FROM. THE. SERVER!&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204427Z" creationid="daryl" creationdate="20200919T204427Z">
+        <seg>&lt;g1&gt;¡SOLO.ESCUCHA.LA.SEÑAL.DEL.SERVIDOR!&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;Please also see this &lt;g2&gt;important note on Central Servers&lt;/g2&gt;.&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055211Z" creationid="daryl" creationdate="20200918T055211Z">
@@ -1414,10 +1288,26 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Remark:&lt;/g1&gt; To run Jamulus, type &lt;g2&gt;Jamulus&lt;/g2&gt; (with a capital J) on the command line. You should see the Jamulus client in a window.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083323Z" creationid="daryl" creationdate="20200921T083323Z">
+        <seg>&lt;g1&gt;Comentario:&lt;/g1&gt;Para ejecutar Jamulus, escribe &lt;g2&gt;Jamulus&lt;/g2&gt; (con J mayúscula) en la línea de comandos. Debería abrirse el cliente de Jamulus.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;g1&gt;Requirements:&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052544Z" creationid="daryl" creationdate="20200918T052544Z">
         <seg>&lt;g1&gt;Requisitos:&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Right now, we don't provide official packages for Jamulus, but compiling the sources is quite easy. You can also have a look at issue &lt;g2&gt;#223&lt;/g2&gt; to see if your distribution provides a package.&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T071252Z" creationid="daryl" creationdate="20200921T071252Z">
+        <seg>&lt;g1&gt;Ahora mismo no tenemos paquetes oficiales disponibles para Jamulus, pero compilar las fuentes es bastante sencillo. También puedes echar un vistazo al issue &lt;g2&gt;#223&lt;/g2&gt; para ver si tu distribución ofrece paquetes.&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1466,6 +1356,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055411Z" creationid="daryl" creationdate="20200918T055411Z">
         <seg>Interfaz de audio XLR a USB &lt;g1&gt;Shure X2u&lt;/g1&gt; con entrada de auriculares; convierte un micrófono XLR en uno USB. Sube la mezcla PC/Mic a 100% PC y escucha la salida por los auriculares. Probado con un Raspberry Pi 4 ejecutando Raspberry Pi OS Buster, versión del kernel 4.19.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;g1&gt;Sometimes optional but highly recommended: an audio interface!&lt;/g1&gt; Unless you are a singer with a USB microphone, then to avoid "latency" (delay between you playing your instrument and you hearing it) you are strongly advised to use an audio interface: a box that you can plug your instrument(s) into rather than using your computer's built-in sound card. The interface will connect to your PC usually via USB. See &lt;g2&gt;Hardware Setup&lt;/g2&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T065123Z" creationid="daryl" creationdate="20200921T065032Z">
+        <seg>&lt;g1&gt;En ocasiones opcional pero altamente recomendado: ¡un interfaz de audio!&lt;/g1&gt; A menos que quieras cantar con un micrófono USB, para evitar la "latencia" (el retardo entre tocar el instrumento y escucharlo) se recomienda encarecidamente utilizar un interfaz de audio: un dispositivo al que conectas tu(s) instrumento(s) en lugar de utilizar el dispositivo de audio interno de tu PC. El interfaz se conecta al PC normalmente a través de USB. Ver &lt;g2&gt;Configuración de Hardware&lt;/g2&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1534,18 +1432,10 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>&lt;g1&gt;To run Jamulus, type &lt;g2&gt;Jamulus&lt;/g2&gt;&lt;/g1&gt; (with a capital J) &lt;g3&gt;on the command line&lt;/g3&gt; (you should see the Jamulus client window appear)</seg>
+        <seg>&lt;g1&gt;Users concerned by the use of Google's network can &lt;g2&gt;re-compile&lt;/g2&gt; the Jamulus source code to use an alternative for WELL_KNOWN_HOST/ WELL_KNOWN_PORT in &lt;g3&gt;global.h&lt;/g3&gt;&lt;/g1&gt;</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053846Z" creationid="daryl" creationdate="20200918T053846Z">
-        <seg>&lt;g1&gt;Para ejecutar Jamulus, escribe &lt;g2&gt;Jamulus&lt;/g2&gt;&lt;/g1&gt; (con J mayúscula) &lt;g3&gt;en la línea de comandos&lt;/g3&gt; (debería abrirse el cliente de Jamulus)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;Users concerned by the use of Google's network can &lt;g2&gt;re-compile&lt;/g2&gt; the Jamulus &lt;g3&gt;source code&lt;/g3&gt; to use an alternative.&lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T054631Z" creationid="daryl" creationdate="20200918T054631Z">
-        <seg>&lt;g1&gt;Los usuarios preocupados por el uso de la red de Google pueden &lt;g2&gt;re-compilar&lt;/g2&gt; el &lt;g3&gt;código fuente&lt;/g3&gt; de Jamulus para utilizar una alternativa.&lt;/g1&gt;</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T095012Z" creationid="daryl" creationdate="20200921T095012Z">
+        <seg>&lt;g1&gt;Los usuarios preocupados por el uso de la red de Google pueden &lt;g2&gt;re-compilar&lt;/g2&gt; el código fuente de Jamulus para utilizar una alternativa para WELL_KNOWN_HOST/ WELL_KNOWN_PORT en &lt;g3&gt;global.h&lt;/g3&gt;&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1598,10 +1488,10 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>&lt;g1&gt;Windows users&lt;/g1&gt;: Use a sound card with a native ASIO driver to ensure the lowest possible latencies. Or you can try using a &lt;g2&gt;free ASIO driver&lt;/g2&gt; instead. Have a look at this &lt;g3&gt;basic setup guide&lt;/g3&gt;.</seg>
+        <seg>&lt;g1&gt;Windows users&lt;/g1&gt;: You need to install an ASIO driver. If you haven't installed one yet, please do so. Best use a sound card with a native ASIO driver to ensure the lowest possible latencies. If your sound card doesn't provide one, try using this &lt;g2&gt;free ASIO driver (ASIO4All)&lt;/g2&gt; instead. To setup ASIO4All, have a look at this &lt;g3&gt;basic setup guide&lt;/g3&gt;.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053724Z" creationid="daryl" creationdate="20200918T053724Z">
-        <seg>&lt;g1&gt;Usuarios de Windows&lt;/g1&gt;: Utiliza una tarjeta de sonido con driver ASIO nativo para garantizar la latencia más baja posible. O puedes probar a usar un &lt;g2&gt;driver ASIO gratuito&lt;/g2&gt; en su lugar. Echa un vistazo a esta &lt;g3&gt;guía básica de configuración&lt;/g3&gt;.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070103Z" creationid="daryl" creationdate="20200921T070103Z">
+        <seg>&lt;g1&gt;Usuarios de Windows&lt;/g1&gt;: Necesitarás instalar un driver ASIO driver. Si no lo has hecho ya, por favor hazlo. Es mejor utilizar una tarjeta de audio con driver ASIO nativo para garantizar la latencia más baja posible. Si tu tarjeta de audio no lo proporciona, prueba con este &lt;g2&gt;free ASIO driver (ASIO4All)&lt;/g2&gt; instead. Para configurar ASIO4All, echa un vistazo a esta &lt;g3&gt;guía básica de configuración&lt;/g3&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1610,54 +1500,6 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052634Z" creationid="daryl" creationdate="20200918T052634Z">
         <seg>&lt;g1&gt;Puedes ejecutar tu servidor en uno de tres "modos" (bien en casa o en un host de terceros):&lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[...]&lt;/g1&gt; means optional parameter</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053019Z" creationid="daryl" creationdate="20200918T053019Z">
-        <seg>&lt;g1&gt;[...]&lt;/g1&gt; significa parámetro opcional</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[name];[city];[[country as QLocale ID]];&lt;/g1&gt; ...</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053109Z" creationid="daryl" creationdate="20200918T053109Z">
-        <seg>&lt;g1&gt;[nombre];[ciudad];[[país como ID de QLocale]];&lt;/g1&gt; ...</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[server1 address];[server1 name]; ... &lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053110Z" creationid="daryl" creationdate="20200918T053110Z">
-        <seg>&lt;g1&gt;[dirección servidor1];[nombre servidor1]; ... &lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[server1 city]; ...&lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053111Z" creationid="daryl" creationdate="20200918T053111Z">
-        <seg>&lt;g1&gt;[ciudad servidor1]; ...&lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[server1 country as QLocale ID]; ... &lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053112Z" creationid="daryl" creationdate="20200918T053112Z">
-        <seg>&lt;g1&gt;[país servidor1 como ID QLocale]; ... &lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;[server2 address]; ...&lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053112Z" creationid="daryl" creationdate="20200918T053112Z">
-        <seg>&lt;g1&gt;[dirección servidor2]; ...&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1846,6 +1688,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>&lt;g1&gt;¿Hablas español? &lt;g2&gt;Videotutorial en castellano!&lt;/g2&gt;&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204506Z" creationid="daryl" creationdate="20200919T204506Z">
+        <seg>&lt;g1&gt;&lt;g2&gt;¡Aquí tienes un videotutorial en castellano!&lt;/g2&gt;&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>&lt;x1/&gt;A typical Jamulus jam!&lt;x2/&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053703Z" creationid="daryl" creationdate="20200918T053703Z">
@@ -1858,6 +1708,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054714Z" creationid="daryl" creationdate="20200918T054714Z">
         <seg>&lt;x1/&gt;Linksys screenshot&lt;x2/&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>&lt;x1/&gt;Overview&lt;x2/&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204603Z" creationid="daryl" creationdate="20200919T204558Z">
+        <seg>&lt;x1/&gt;Descripción&lt;x2/&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -1886,18 +1744,42 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>A few Mixers with USB/Firewire/Thunderbolt will either send &lt;g1&gt;only&lt;/g1&gt; a mixed down signal to the &lt;g2&gt;digital&lt;/g2&gt; output (small/budget mixers), or else also ADD a stereo mix-down signal to the separate signals on the digital output.</seg>
+        <seg>A &lt;g1&gt;wired&lt;/g1&gt; Internet connection (Ethernet, don't use Wi-Fi) with a speed of at least 200Kbps (0.2Mbps) up and down, with 800Kbps recommended (&lt;g2&gt;more details here&lt;/g2&gt;). If you have a broadband connection of 10Mbits down and 1Mbps up, you're unlikely to run into any bandwidth-related issues using Jamulus.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053737Z" creationid="daryl" creationdate="20200918T053737Z">
-        <seg>Algunas mesas de mezclas con USB/Firewire/Thunderbolt enviarán &lt;g1&gt;solo&lt;/g1&gt; una señal mezclada a la salida &lt;g2&gt;digital&lt;/g2&gt; (mesas pequeñas/económicas), o si no también AÑADEN una señal mezclada a las señales separadas de la salida digital.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204431Z" creationid="daryl" creationdate="20200919T204431Z">
+        <seg>Una conexión a internet &lt;g1&gt;por cable&lt;/g1&gt; (Ethernet, no utilices Wi-Fi) con una velocidad de al menos 200Kbps (0,2Mbps) de subida y bajada; 800Kbps recomendado (&lt;g2&gt;más detalles aquí)&lt;/g2&gt;). Si tienes una conexión de banda ancha de 10Mbits de bajada y 1Mbps de subida, es improbable que te encuentres con problemas relacionados con el ancho de banda utilizando Jamulus.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>A type of public server (configured with &lt;g1&gt;--pingservers --centralserver localhost&lt;/g1&gt;) for which musicians must enter the address in their client’s "Custom Central Server" settings field. They will then see a Connection Setup list which is managed by your central server. Server operators can also register with your server so their servers can show up in your list. Configuring your server as a Central Server need only be done under special circumstances (e.g. for online events or musical associations). Most people can ignore this type. If you want to control which servers can register with your central server, you can enable a whitelist with the command line Option &lt;g2&gt;-f&lt;/g2&gt;. See the &lt;g3&gt;command line options page&lt;/g3&gt; for further information about this feature.</seg>
+        <seg>A PC with either Windows 10, MacBook/iMac OS X El Capitan (v10.11) or higher, or Linux.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052846Z" creationid="daryl" creationdate="20200918T052846Z">
-        <seg>Un tipo de servidor (configurado con &lt;g1&gt;--pingservers --centralserver localhost&lt;/g1&gt;) para el cual los músicos deben introducir la dirección en el campo "Dirección Personalizada Servidor Central" en la ventana de Configuración. Escogiendo "Personalizado" en el campo de "Lista" en la ventana de Configuración de Conexión verán una lista de servidores gestionada por tu servidor central. Los operadores de servidores también pueden registrarse con tu servidor para que los suyos aparezcan en tu lista. Configurar tu servidor como Servidor Central solo necesita hacerse en circunstancias especiales (por ej. para eventos online o asociaciones musicales). La mayoría de personas pueden ignorar esta función. Si quieres controlar qué servidores pueden registrarse en tu servidor central, puedes habilitar una lista blanca con la opción de comando &lt;g2&gt;-f&lt;/g2&gt;. Ver la &lt;g3&gt;página de opciones de línea de comandos&lt;/g3&gt; para más información sobre esta función.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204430Z" creationid="daryl" creationdate="20200919T204430Z">
+        <seg>Un PC bien con Windows 10, MacBook/iMac OS X El Capitan (v10.11) o posterior, o Linux.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>A PC with either Windows 10, MacBook/iMac OS X El Capitan (v10.11) or higher, or Linux. For the Jamulus software to run stable it is recommended to use a PC with at least 1.5GHz CPU frequency.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T064934Z" creationid="daryl" creationdate="20200921T064743Z">
+        <seg>Un PC bien con Windows 10, MacBook/iMac OS X El Capitan (v10.11) o posterior, o Linux. Para que el software Jamulus se ejecute con estabilidad se recomienda utilizar un PC con un procesador de al menos 1.5GHz.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>A bash script combine all the commands above into one script and instead of copy and paste the commands above into the Linux shell and execute them step by step, you would just run one script e.g. &lt;g1&gt;install4ubuntu.sh&lt;/g1&gt;. As you might have noticed above the installation commands differ for different Linux distributions. The following example was tested on Linux Mint and combins all the commands above into one script for Ubuntu/Linux Mint. To incorporate the different command for different Linux distributions variables define the distribution and the release for which the installation script should be performed. Example focuses on Ubuntu with release 18.04 as example. So the suggested script name for the release is e.g. &lt;g2&gt;install4ubuntu18_4.sh&lt;/g2&gt;. The script commands are generic so that the installation could also be modified so that they work on other linux distributions.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T074925Z" creationid="daryl" creationdate="20200921T074925Z">
+        <seg>Un bash script combina todos los comandos de arriba en un script y en lugar de copiar y pegar los comandos en la terminal y ejecutarlos uno por uno, simplemente tienes que ejecutar un script, por ejemplo &lt;g1&gt;install4ubuntu.sh&lt;/g1&gt;. Como quizá hayas notado, los comandos de instalación difieren para las diferentes distribuciones de Linux. El siguiente ejemplo ha sido probado en Linux Mint y combina todos los comandos de arriba en un único script para Ubuntu/Linux Mint. Para incorporar los diferentes comandos para distribuciones distintas de Linux, hay variables que definen la distribución y la versión para la cual hay que ejecutar el script. El ejemplo se centra en Ubuntu con la versión 18.04 como ejemplo. Así que el nombre sugerido para el script sería &lt;g2&gt;install4ubuntu18_4.sh&lt;/g2&gt;. Los comandos del script son genéricos para que la instalación pueda ser modificada para funcionar con otras distribuciones de Linux.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>A few Mixers with USB/Firewire/Thunderbolt will either send &lt;g1&gt;only&lt;/g1&gt; a mixed down signal to the &lt;g2&gt;digital&lt;/g2&gt; output (small/budget mixers), or else also ADD a stereo mix-down signal to the separate signals on the digital output.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053737Z" creationid="daryl" creationdate="20200918T053737Z">
+        <seg>Algunas mesas de mezclas con USB/Firewire/Thunderbolt enviarán &lt;g1&gt;solo&lt;/g1&gt; una señal mezclada a la salida &lt;g2&gt;digital&lt;/g2&gt; (mesas pequeñas/económicas), o si no también AÑADEN una señal mezclada a las señales separadas de la salida digital.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1958,10 +1840,26 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Adaptation of the Installation Script</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075818Z" creationid="daryl" creationdate="20200921T075818Z">
+        <seg>Adaptación del Script de Instalación</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>After installing Jamulus, you can run it in your chosen &lt;g1&gt;server mode&lt;/g1&gt; using the &lt;g2&gt;Terminal program&lt;/g2&gt; to call Jamulus with the &lt;g3&gt;-s&lt;/g3&gt; option as follows:</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055051Z" creationid="daryl" creationdate="20200918T055051Z">
         <seg>Tras instalar Jamulus, puedes ejecutarlo en el &lt;g1&gt;modo de servidor&lt;/g1&gt; que elijas, utilizando la &lt;g2&gt;Terminal&lt;/g2&gt; para abrir Jamulus con la opción &lt;g3&gt;-s&lt;/g3&gt; como sigue:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>After that test the installation on debian and modify the commands so that the installation script works on Debian. Please share working installation scripts in this Wiki. The maintainer of this repository might add a folder in this repository &lt;g1&gt;/install_scripts&lt;/g1&gt; for working installation scripts. Create a pull request for new installation scripts or create an issue with a request to ask a documented and tested installation script to this repository.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T080450Z" creationid="daryl" creationdate="20200921T080450Z">
+        <seg>Tras esto prueba la instalación en Debian y modifica los comandos para que el script de instalación funcione en Debian. Por favor comparte scripts de instalación funcionales en esta Wiki. El gestor de este repositorio puede añadir una carpeta &lt;g1&gt;/install_scripts&lt;/g1&gt; para scripts de instalación funcionales. Crea un "pull request" para nuevos scripts de instalación o crea un "issue" con la petición, para pedir que se añada un script de instalación documentado y testado a este repositorio.</seg>
       </tuv>
     </tu>
     <tu>
@@ -1994,6 +1892,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055044Z" creationid="daryl" creationdate="20200918T055044Z">
         <seg>Aunque no es estrictamente necesario, recomendamos utilizar el indicador &lt;g1&gt;headless&lt;/g1&gt; para agilizar el proceso de compilación. Los usuarios de Gentoo también pueden evitar la instalación de algunas dependencias como consecuencia de esto. &lt;g2&gt;Más información aquí&lt;/g2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Always connect to servers with the &lt;g1&gt;lowest ping times&lt;/g1&gt; as shown in your server list. 15ms or below will give you the best chance of having a good time (although there's other things that affect performance too). Anything higher and you're taking your chances.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204510Z" creationid="daryl" creationdate="20200919T204510Z">
+        <seg>Conéctate siempre a los servidores con los &lt;g1&gt;valores de ping más bajos&lt;/g1&gt; tal como se muestran en la lista de servidores. 15ms o menos te garantizarán la diversión (aunque hay otras cosas que también afectan al rendimiento). Valores por encima de eso podrán dar resultados más dudosos.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2208,6 +2114,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Bash Script for Download and Compile</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T072754Z" creationid="daryl" creationdate="20200921T072754Z">
+        <seg>Bash Script para Descargar y Compilar</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Be aware that while listening to the server's signal will ensure you will be in sync with other musicians, you may also experience problems if your overall latency (indicated by the "Delay" light in Jamulus) is not green or at least yellow most of the time. Consult the &lt;g1&gt;software manual&lt;/g1&gt; to understand how to adjust your setup to help with this.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052921Z" creationid="daryl" creationdate="20200918T052921Z">
@@ -2376,6 +2290,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>CURRENTLY UNDER CONSTRUCTION</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204423Z" creationid="daryl" creationdate="20200919T204423Z">
+        <seg>CURRENTLY UNDER CONSTRUCTION</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Can I convert my private server to being a public one?</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055348Z" creationid="daryl" creationdate="20200918T055348Z">
@@ -2480,6 +2402,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Check or adapt the &lt;g1&gt;settings&lt;/g1&gt;  in &lt;g2&gt;QjackCtl&lt;/g2&gt; (see settings below)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082143Z" creationid="daryl" creationdate="20200921T082143Z">
+        <seg>Comprueba o adapta la &lt;g1&gt;configuración&lt;/g1&gt; en &lt;g2&gt;QjackCtl&lt;/g2&gt; (ver configuración abajo)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Cl&amp;ear</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -2500,6 +2430,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200415T201223Z" creationid="daryl" creationdate="20200415T201223Z">
         <seg>Cliente</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Close all programs and start Jamulus (don't forget to choose the right inputs in Jamulus's settings)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070713Z" creationid="daryl" creationdate="20200921T070713Z">
+        <seg>Cierra todos los programas y arranca Jamulus (no olvides escoger las entradas correctas en la configuración de Jamulus)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2560,10 +2498,18 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Configure Jack to do the following:</seg>
+        <seg>Configure Jack in &lt;g1&gt;qjackctl&lt;/g1&gt; in Settings and do the following:</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053841Z" creationid="daryl" creationdate="20200918T053841Z">
-        <seg>Configura Jack para hacer lo siguiente:</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082609Z" creationid="daryl" creationdate="20200921T082609Z">
+        <seg>Configura Jack en &lt;g1&gt;qjackctl&lt;/g1&gt; en Configuración y haz lo siguiente:</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Configure Jack with QJackCtl</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T081537Z" creationid="daryl" creationdate="20200921T081537Z">
+        <seg>Configura Jack con QJackCtl</seg>
       </tuv>
     </tu>
     <tu>
@@ -2572,6 +2518,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053751Z" creationid="daryl" creationdate="20200918T053751Z">
         <seg>Configura Jamulus para utilizar la configuración de audio correcta (ver &lt;g1&gt;esta excelente guía&lt;/g1&gt; de &lt;g2&gt;Simon Tomlinson&lt;/g2&gt; en Facebook).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Configuring your server as a Central Server need only be done under special circumstances (e.g. for online events or musical associations). Most people can ignore this type.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T062534Z" creationid="daryl" creationdate="20200919T204326Z">
+        <seg>Configurar tu servidor como un Servidor Central solo necesita hacerse en circunstancias especiales (por ej. para eventos online o asociaciones musicales). La mayoría de las personas pueden ignorar este tipo.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2600,18 +2554,18 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Connect to a server and play something. Now you should hear yourself with the delay from the server.</seg>
+        <seg>Connect to a Jamulus server and have fun!</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052918Z" creationid="daryl" creationdate="20200918T052918Z">
-        <seg>Conéctate a un servidor y toca algo. Ahora deberías escucharte con el retardo del servidor.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070810Z" creationid="daryl" creationdate="20200921T070810Z">
+        <seg>Conéctate a un servidor Jamulus y ¡a divertirse!</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Connect to given server address on startup, format &lt;g1&gt;address[:port]&lt;/g1&gt; (client only)</seg>
+        <seg>Connect to a server and play something. Now you should hear yourself with the delay from the server.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053034Z" creationid="daryl" creationdate="20200918T053034Z">
-        <seg>Conectar con una dirección de servidor al arrancar, formato &lt;g1&gt;dirección[:puerto]&lt;/g1&gt; (solo cliente)</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052918Z" creationid="daryl" creationdate="20200918T052918Z">
+        <seg>Conéctate a un servidor y toca algo. Ahora deberías escucharte con el retardo del servidor.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2652,6 +2606,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055020Z" creationid="daryl" creationdate="20200918T055020Z">
         <seg>Controlar las grabaciones</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Copy the following installation script into a file and save it to the filename &lt;g1&gt;install4ubuntu18_4.sh&lt;/g1&gt;. After saving the file e.g. in your &lt;g2&gt;Download&lt;/g2&gt; directory change to the directory and call the following script with &lt;g3&gt;sh install4ubuntu18_4.sh&lt;/g3&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T080922Z" creationid="daryl" creationdate="20200921T080531Z">
+        <seg>Copia el siguiente script de instalación a un archivo y guárdalo con el nombre &lt;g1&gt;install4ubuntu18_4.sh&lt;/g1&gt;. Tras guardar el archivo por ejemplo en tu directorio de &lt;g2&gt;Descargas&lt;/g2&gt;, cambia a ese directorio y ejecuta el siguiente script con &lt;g3&gt;sh install4ubuntu18_4.sh&lt;/g3&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2776,38 +2738,6 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Disable GUI   (client and server)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053104Z" creationid="daryl" creationdate="20200918T053104Z">
-        <seg>Deshabilitar interfaz gráfica  (cliente y servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Disable auto Jack connections (client only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053053Z" creationid="daryl" creationdate="20200918T053053Z">
-        <seg>Deshabilitar conexiones automáticas de Jack (solo cliente)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Disable translations (client and server)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053123Z" creationid="daryl" creationdate="20200918T053123Z">
-        <seg>Deshabilitar traducciones (cliente y servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Disconnect all clients on quit</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053035Z" creationid="daryl" creationdate="20200918T053035Z">
-        <seg>Desconectar todos los clientes al salir</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Display Channel Levels</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -2856,10 +2786,10 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Download and install an ASIO Driver. It is recommended to use a sound card with a native ASIO driver, or install &lt;g1&gt;this free ASIO driver&lt;/g1&gt; &lt;g2&gt;before&lt;/g2&gt; installing Jamulus.</seg>
+        <seg>Download and install an ASIO Driver. It is recommended to use a sound card with a native ASIO driver. If you don't have one, install &lt;g1&gt;this free ASIO driver (ASIO4All)&lt;/g1&gt; &lt;g2&gt;before&lt;/g2&gt; installing Jamulus.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053927Z" creationid="daryl" creationdate="20200918T053927Z">
-        <seg>Descarga e instala un driver ASIO. Se recomienda usar una tarjeta de audio con driver ASIO nativo, o instalar &lt;g1&gt;este driver ASIO gratuito&lt;/g1&gt; &lt;g2&gt;antes de&lt;/g2&gt; instalar Jamulus.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T091044Z" creationid="daryl" creationdate="20200921T091044Z">
+        <seg>Descarga e instala un driver ASIO. Se recomienda usar una tarjeta de audio con driver ASIO nativo. Si no lo tiene, instala &lt;g1&gt;este driver ASIO gratuito&lt;/g1&gt; &lt;g2&gt;antes de&lt;/g2&gt; instalar Jamulus.</seg>
       </tuv>
     </tu>
     <tu>
@@ -2920,10 +2850,10 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Enable HTML status file, set file name  (server only)</seg>
+        <seg>Enable &lt;g1&gt;advanced view&lt;/g1&gt; in ASIO4All (click the tool icon on the bottom right)</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053101Z" creationid="daryl" creationdate="20200918T053101Z">
-        <seg>Habilita un archivo de estado HTML, establece un nombre de archivo (solo servidor)</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092653Z" creationid="daryl" creationdate="20200921T092653Z">
+        <seg>Activa &lt;g1&gt;advanced view&lt;/g1&gt; en ASIO4All (haz clic en el icono de la herramienta abajo a la derecha)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2932,22 +2862,6 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES">
         <seg>Activar Buffers Red Pequeños</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Enable logging, set file name (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053055Z" creationid="daryl" creationdate="20200918T053055Z">
-        <seg>Habilitar registro, establece nombre del archivo (solo servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Enable multithreading (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053126Z" creationid="daryl" creationdate="20200918T053126Z">
-        <seg>Habilitar multithreading (solo servidor)</seg>
       </tuv>
     </tu>
     <tu>
@@ -2972,6 +2886,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053739Z" creationid="daryl" creationdate="20200918T053739Z">
         <seg>Ejemplos de Configuración</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Example setups can be found further down this page.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070153Z" creationid="daryl" creationdate="20200921T070153Z">
+        <seg>Se pueden encontrar ejemplos de configuración más abajo en esta página.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3028,6 +2950,16 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052946Z" creationid="daryl" creationdate="20200918T052946Z">
         <seg>Primero comprueba que tienes el género de servidor correcto seleccionado en la ventana de Configuración de Conexión. Pero en ocasiones problemas de red hacen que tu cliente no muestre todos los servidores disponibles. Si conoces el nombre del servidor al que te quieres unir, puedes &lt;g1&gt;mirar su dirección IP aquí&lt;/g1&gt;. Introduce la dirección IP en el campo de "Nombre/Dirección Servidor" en la ventana de Configuración de Conexión para conectarte.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>First of all &lt;g1&gt;close all applications&lt;/g1&gt; (especially those which could access your soundcard like your browser) to minimize conflicts. Now make sure that only the &lt;g2&gt;correct inputs/outputs&lt;/g2&gt; in its control panel &lt;g3&gt;are switched on&lt;/g3&gt;.
+You may need to experiment a bit to find the right ones since every computer is a bit different. Do this while you're connected to a server to hear your instrument or voice and check if everything is correctly setup.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092514Z" creationid="daryl" creationdate="20200921T092420Z">
+        <seg>Primero &lt;g1&gt;cierra todas las aplicaciones&lt;/g1&gt; (sobre todo aquellos que podrían acceder a tu tarjeta de sonido) para minimizar conflictos. Ahora asegúrate de que solo &lt;g2&gt;están activadas&lt;/g2&gt; las &lt;g3&gt;entradas/salidas correctas&lt;/g3&gt; en su panel de control.
+Puede que tengas que experimentar un poco para encontrar las correctas porque cada ordenador es diferente. Haz esto estando conectado a un servidor para escuchar tu voz o instrumento y comprueba que todo está bien configurado.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3152,6 +3084,22 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>For detailed information on using Jamulus, please see the &lt;g1&gt;Help Manual&lt;/g1&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204535Z" creationid="daryl" creationdate="20200919T204535Z">
+        <seg>Para información detallada sobre la utilización de Jamulus, por favor consulta el &lt;g1&gt;Manual de Ayuda&lt;/g1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>For detailed information on using Jamulus, please see the &lt;g1&gt;help manual&lt;/g1&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T090820Z" creationid="daryl" creationdate="20200921T090820Z">
+        <seg>Para información detallada sobre la utilización de Jamulus, por favor consulta el &lt;g1&gt;Manual de Ayuda&lt;/g1&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>For each</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -3200,6 +3148,22 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Further information about how to avoid listening to yourself (and help with other problems) can be found in the &lt;g1&gt;Troubleshooting FAQ section&lt;/g1&gt; (&lt;g2&gt;currently under construction&lt;/g2&gt;)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204541Z" creationid="daryl" creationdate="20200919T204541Z">
+        <seg>Se puede encontrar más información sobre cómo evitar escucharte a ti mismo (y ayuda con otros problemas) en la &lt;g1&gt;sección de FAQ sobre la Resolución de Problemas&lt;/g1&gt; (&lt;g2&gt;aún en construcción&lt;/g2&gt;)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>General info</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T065329Z" creationid="daryl" creationdate="20200921T065329Z">
+        <seg>Información general</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>General notes</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053223Z" creationid="daryl" creationdate="20200918T053208Z">
@@ -3220,6 +3184,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052620Z" creationid="daryl" creationdate="20200918T052620Z">
         <seg>Género</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Get Jamulus</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T072625Z" creationid="daryl" creationdate="20200921T072625Z">
+        <seg>Obtén Jamulus</seg>
       </tuv>
     </tu>
     <tu>
@@ -3256,6 +3228,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Go to &lt;g1&gt;"ASIO Settings"&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092601Z" creationid="daryl" creationdate="20200921T092601Z">
+        <seg>Ve a &lt;g1&gt;"ASIO Settings"&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Have a look also at &lt;g1&gt;Hardware Setup&lt;/g1&gt;.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053849Z" creationid="daryl" creationdate="20200918T053849Z">
@@ -3268,14 +3248,6 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053922Z" creationid="daryl" creationdate="20200918T053922Z">
         <seg>Mírate la &lt;g1&gt;Configuración de Hardware&lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Have fun!</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053754Z" creationid="daryl" creationdate="20200918T053754Z">
-        <seg>¡Diviértete!</seg>
       </tuv>
     </tu>
     <tu>
@@ -3296,10 +3268,26 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Having trouble? Can't keep in time?</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204536Z" creationid="daryl" creationdate="20200919T204536Z">
+        <seg>¿Tienes problemas? ¿No puedes mantener el tiempo?</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Headless servers</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052619Z" creationid="daryl" creationdate="20200918T052619Z">
         <seg>Servidores 'Headless'</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Headphones to prevent echo or feedback (particularly if singing or playing acoustic instruments)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204430Z" creationid="daryl" creationdate="20200919T204430Z">
+        <seg>Auriculares para evitar eco o feedback (sobre todo si se canta o toca instrumentos acústicos)</seg>
       </tuv>
     </tu>
     <tu>
@@ -3376,6 +3364,14 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>How Jamulus works (in general)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204542Z" creationid="daryl" creationdate="20200919T204542Z">
+        <seg>Cómo funciona Jamulus (en general)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>I'm running my client on the same machine/network as my server but I can't connect to it</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055337Z" creationid="daryl" creationdate="20200918T055337Z">
@@ -3416,6 +3412,15 @@ function loadserverstat ( $statfilename )
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>If nothing works, try to restart Jamulus and/or your PC.
+Enabled and accessible inputs/outputs show a lit up on/off button and a play button. If you see a red cross or a yellow symbol, you might need to close other applications. More info about how to configure ASIO4All can be found in the ASIO4All manual. This can most likely be found on your desktop or in the folder where the ASIO4All binary is installed (usually &lt;g1&gt;C:\Program Files (x86)\ASIO4ALL v2\&lt;/g1&gt;).</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T093632Z" creationid="daryl" creationdate="20200921T093632Z">
+        <seg>Si nada funciona, intenta reiniciar Jamulus y/o tu PC. Las entradas/salidas activadas muestran un botón iluminado y un botón de 'play'. Si ves una cruz roja o un símbolo amarillo, quizá tengas que cerrar otras aplicaciones. Se puede eoncontrar más información sobre cómo configurar ASIO4All en el manual de ASIO4All. Normalmente se encuentra en tu escritorio o en la carpeta donde se instala el archivo binario de ASIO4All (normalmente &lt;g1&gt;C:\Archivos de Programa (x86)\ASIO4ALL v2\&lt;/g1&gt;).</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>If the</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -3436,6 +3441,14 @@ function loadserverstat ( $statfilename )
       </tuv>
       <tuv lang="es-ES">
         <seg>Si el driver se selecciona durante una conexión activa, la conexión se detiene, se cambia el driver y la conexión se reanuda automáticamente.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>If there are always certain hosts you want to list (whether they're actually online and registered or not), this can be done with the extended &lt;g1&gt;--serverinfo&lt;/g1&gt; value, with the additional entries being the fixed values. See the &lt;g2&gt;command line options page&lt;/g2&gt; for further information about this feature.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T064553Z" creationid="daryl" creationdate="20200921T064553Z">
+        <seg>Si hay ciertos servidores que siempre quieres listar (estén o no online, o registrados o no), esto se puede hacer con la opción extendida &lt;g1&gt;--serverinfo&lt;/g1&gt;, con las entradas adicionales que son valores fijos. Ver &lt;g2&gt;command line options page&lt;/g2&gt; para más información sobre esta característica.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3602,10 +3615,34 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>If you want to control which servers can register with your central server, you can enable a whitelist with the command line Option &lt;g1&gt;--listfilter&lt;/g1&gt;. See the &lt;g2&gt;command line options page&lt;/g2&gt; for further information about this feature.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T064310Z" creationid="daryl" creationdate="20200921T064310Z">
+        <seg>Si quieres controlar qué servidores pueden registrarse con tu servidor central, puedes habilitar una lista blanca con la opción de línea de comandos &lt;g1&gt;--listfilter&lt;/g1&gt;. Ver la &lt;g2&gt;página de opciones de la línea de comandos&lt;/g2&gt; para más información sobre esta característica.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>If you want to create an installation script for debian just copy the script &lt;g1&gt;install4ubuntu18_4.sh&lt;/g1&gt; to &lt;g2&gt;install4debian10_6.sh&lt;/g2&gt; and modify the distro variables to</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T080036Z" creationid="daryl" creationdate="20200921T080036Z">
+        <seg>Si quieres crear un script de instalación para Debian, simplemente copia el script &lt;g1&gt;install4ubuntu18_4.sh&lt;/g1&gt; a &lt;g2&gt;install4debian10_6.sh&lt;/g2&gt; y modifica las variables de distribución a</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>If you want to install a specific release, you can do the following using git (where &lt;g1&gt;[RELEASE]&lt;/g1&gt; is a release ID such as r3_5_8). See the &lt;g2&gt;official tagged releases&lt;/g2&gt;.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055214Z" creationid="daryl" creationdate="20200918T055214Z">
         <seg>Si quieres instalar una versión concreta, puedes hacer lo siguiente usando git (donde &lt;g1&gt;[VERSIÓN]&lt;/g1&gt; es el código de la versión como r3_5_8). Ver &lt;g2&gt;las versiones oficiales&lt;/g2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>If you want to sing (or just talk) with other musicians, either a USB microphone or a mic you can connection to a socket on the PC (note that mics should have a sample/word rate of 48 kHz). But you can communicate over the text chat window if you don't have a mic.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204432Z" creationid="daryl" creationdate="20200919T204432Z">
+        <seg>Si quieres cantar (o simplemente hablar) con otros músicos, puedes utilizar un micrófono USB o uno de los que se conectan directamente al PC (ten en cuenta que los micrófonos deben tener una tasa de muestreo de 48 kHz). Pero te puedes comunicar a través de la ventana de chat si no tienes micrófono.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3670,14 +3707,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053748Z" creationid="daryl" creationdate="20200918T053748Z">
         <seg>En el futuro, siempre utiliza el mismo puerto USB para el dispositivo de audio.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Initialization file name (client and server)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053049Z" creationid="daryl" creationdate="20200918T053049Z">
-        <seg>Nombre de archivo de inicialización (cliente y servidor)</seg>
       </tuv>
     </tu>
     <tu>
@@ -3766,6 +3795,22 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053821Z" creationid="daryl" creationdate="20200918T053821Z">
         <seg>Instala las dependencias</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Installation Script</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T071343Z" creationid="daryl" creationdate="20200921T071343Z">
+        <seg>Script de instalación</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Installation dependent on Linux Distribution</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075006Z" creationid="daryl" creationdate="20200921T075006Z">
+        <seg>Instalación dependiente de la Distribución de Linux</seg>
       </tuv>
     </tu>
     <tu>
@@ -3862,10 +3907,10 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Jamulus clients need &lt;g1&gt;Jack&lt;/g1&gt; to run, but you need to configure that first. The recommended method is to use QjackCtl. The exact settings for Jack will depend on what your audio interface/sound card is capable of.</seg>
+        <seg>Jamulus clients need &lt;g1&gt;Jack&lt;/g1&gt; to run, but you need to configure that first. The recommended method is to use &lt;g2&gt;QjackCtl&lt;/g2&gt;.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053840Z" creationid="daryl" creationdate="20200918T053840Z">
-        <seg>Los clientes de Jamulus necesitan &lt;g1&gt;Jack&lt;/g1&gt; para funcionar, pero hay que configurarlo primero. El método recomendado es utilizar QjackCtl. La configuración exacta de Jack dependerá de lo que es capaz tu interfaz/tarjeta de audio.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T081830Z" creationid="daryl" creationdate="20200921T081830Z">
+        <seg>Los clientes de Jamulus necesitan &lt;g1&gt;Jack&lt;/g1&gt; para funcionar, pero hay que configurarlo primero. El método recomendado es utilizar &lt;g2&gt;QjackCtl&lt;/g2&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -3874,6 +3919,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052539Z" creationid="daryl" creationdate="20200918T052539Z">
         <seg>Actualmente Jamulus no da soporte para IPv6</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Jamulus has been installed and can be used now. If you haven't set up your audio gear yet, have a look at &lt;g1&gt;Hardware Setup&lt;/g1&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T090658Z" creationid="daryl" creationdate="20200921T090658Z">
+        <seg>Jamulus ha sido instalado y ahora puede utilizarse. Si no has configurado tu equipo de audio, consulta la &lt;g1&gt;Hardware Setup&lt;/g1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4094,14 +4147,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Local UDP port number (server only). Default is 22124</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053114Z" creationid="daryl" creationdate="20200918T053114Z">
-        <seg>Número del puerto UDP local (solo servidor). Por defecto es 22124</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Local audio input fader (left/right)</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -4134,14 +4179,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Long name</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053017Z" creationid="daryl" creationdate="20200918T053017Z">
-        <seg>Nombre largo</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Low</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -4154,14 +4191,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055518Z" creationid="daryl" creationdate="20200918T055518Z">
         <seg>Los mensajes MIDI CC consisten en un Número de Control (Control Number), Valor de Control (Controller Value), y Canal (Channel). Jamulus reacciona al Número de Control para saber qué fader mover, en el Canal que especifiques al arrancar Jamulus con &lt;g1&gt;--ctrlmidich&lt;/g1&gt;.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>MIDI controller channel to listen on (client only, see &lt;g1&gt;Tips &amp; Tricks&lt;/g1&gt;)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053139Z" creationid="daryl" creationdate="20200918T053139Z">
-        <seg>Canal para recibir mensajes de controlador MIDI solo cliente, ver &lt;g1&gt;Consejos y Trucos&lt;/g1&gt;)</seg>
       </tuv>
     </tu>
     <tu>
@@ -4230,14 +4259,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Makes the server public. &lt;g1&gt;See note&lt;/g1&gt;.</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053037Z" creationid="daryl" creationdate="20200918T053037Z">
-        <seg>Hace que el servidor sea público. &lt;g1&gt;Ver nota&lt;/g1&gt;.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Making a server status page</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055456Z" creationid="daryl" creationdate="20200918T055456Z">
@@ -4254,18 +4275,20 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Many people attribute problems to the server that are in fact problems with the &lt;g1&gt;client&lt;/g1&gt;. Much depends on the clients' &lt;g2&gt;hardware&lt;/g2&gt;, the networks that &lt;g3&gt;they&lt;/g3&gt; are on, and whether they are sticking to &lt;g4&gt;Rule Number One&lt;/g4&gt;. There is therefore no guarantee that you will achieve lower latency or better overall performance by having your own server.</seg>
+        <seg>Many internal sound cards are named Realtek High Definition Audio, Conexant or similar.
+Headphones and speakers are often labeled as output and microphones as inputs.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052524Z" creationid="daryl" creationdate="20200918T052524Z">
-        <seg>Mucha gente atribuye problemas al servidor que en realidad son problemas con el &lt;g1&gt;cliente&lt;/g1&gt;. Mucho depende del &lt;g2&gt;hardware&lt;/g2&gt; del cliente, las redes en las que &lt;g3&gt;operan&lt;/g3&gt;, y su adherencia a la &lt;g4&gt;Regla Número Uno&lt;/g4&gt;. Por tanto, no hay ninguna garantía de que conseguirás una latencia más baja o un rendimiento superior ejecutando tu propio servidor.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T093000Z" creationid="daryl" creationdate="20200921T093000Z">
+        <seg>Muchas tarjetas internas se denominan Realtek High Definition Audio, Conexant o similar.
+A menudo los auriculares y los altavoces están etiquetados como 'output' y los micrófonos como 'input'.</seg>
       </tuv>
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Maximum number of channels. Default is 10, maximum is 50</seg>
+        <seg>Many people attribute problems to the server that are in fact problems with the &lt;g1&gt;client&lt;/g1&gt;. Much depends on the clients' &lt;g2&gt;hardware&lt;/g2&gt;, the networks that &lt;g3&gt;they&lt;/g3&gt; are on, and whether they are sticking to &lt;g4&gt;Rule Number One&lt;/g4&gt;. There is therefore no guarantee that you will achieve lower latency or better overall performance by having your own server.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053128Z" creationid="daryl" creationdate="20200918T053128Z">
-        <seg>Número máximo de canales. Por defecto son 10, el máximo son 50</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052524Z" creationid="daryl" creationdate="20200918T052524Z">
+        <seg>Mucha gente atribuye problemas al servidor que en realidad son problemas con el &lt;g1&gt;cliente&lt;/g1&gt;. Mucho depende del &lt;g2&gt;hardware&lt;/g2&gt; del cliente, las redes en las que &lt;g3&gt;operan&lt;/g3&gt;, y su adherencia a la &lt;g4&gt;Regla Número Uno&lt;/g4&gt;. Por tanto, no hay ninguna garantía de que conseguirás una latencia más baja o un rendimiento superior ejecutando tu propio servidor.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4282,6 +4305,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054650Z" creationid="daryl" creationdate="20200918T054650Z">
         <seg>Media</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Minimise interruptions!</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204507Z" creationid="daryl" creationdate="20200919T204507Z">
+        <seg>¡Minimiza interrupciones!</seg>
       </tuv>
     </tu>
     <tu>
@@ -4418,6 +4449,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES">
         <seg>Mi &amp;Perfil...</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>NEW! &lt;g1&gt;Jamulus OS!&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204518Z" creationid="daryl" creationdate="20200919T204518Z">
+        <seg>¡NUEVO! &lt;g1&gt;¡Jamulus OS!&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -4574,6 +4613,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Now enable/disable the correct inputs/outputs</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092835Z" creationid="daryl" creationdate="20200921T092835Z">
+        <seg>Ahora activa/desactiva las entradas/salidas correctas</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Now you can run these with the &lt;g1&gt;service start&lt;/g1&gt; command, for example:</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055027Z" creationid="daryl" creationdate="20200918T055027Z">
@@ -4582,10 +4629,10 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Now you should be able to use Jamulus just like any other application.</seg>
+        <seg>Now you should be able to use Jamulus just like any other application. If you see a message which tells you that Jamulus can't be opened because the developer can't be verified, read on and have a look at the following section.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053914Z" creationid="daryl" creationdate="20200918T053914Z">
-        <seg>Ahora deberías de poder usar Jamulus como cualquier otra aplicación.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T090451Z" creationid="daryl" creationdate="20200921T090451Z">
+        <seg>Ahora deberías de poder usar Jamulus como cualquier otra aplicación. Si ves un mensaje diciendo que Jamulus no puede abrirse porque el desarrollador no puede ser verificado, sigue leyendo y echa un vistazo a la siguiente sección.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4694,6 +4741,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Open Jamulus's settings</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092548Z" creationid="daryl" creationdate="20200921T092426Z">
+        <seg>Abre la ventana de Configuración de Jamulus</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Open a terminal window (&lt;g1&gt;CTRL+ALT+t&lt;/g1&gt; on Ubuntu and related distros).</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054940Z" creationid="daryl" creationdate="20200918T054940Z">
@@ -4710,10 +4765,34 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Open the &lt;g1&gt;command shell&lt;/g1&gt; e.g. with Crtl-Alt-T and</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T081939Z" creationid="daryl" creationdate="20200921T081939Z">
+        <seg>Abre la &lt;g1&gt;terminal&lt;/g1&gt; por ej. con Crtl-Alt-T y</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Open the command shell e.g. with Crtl-Alt-T and</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082853Z" creationid="daryl" creationdate="20200921T082853Z">
+        <seg>Abre la terminal por ej. con Crtl-Alt-T y</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Open up a terminal window (command line - &lt;g1&gt;CTRL+ALT+t&lt;/g1&gt; on Ubuntu and related distros), and download and unzip the sources for the &lt;g2&gt;latest release&lt;/g2&gt;.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053817Z" creationid="daryl" creationdate="20200918T053817Z">
         <seg>Abre una terminal (línea de comandos - &lt;g1&gt;CTRL+ALT+t&lt;/g1&gt; en Ubuntu y distros relacionadas), y descarga y descomprime las fuentes para &lt;g2&gt;la última versión desde aquí&lt;/g2&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Open your soundcard inputs by clicking the &lt;g1&gt;plus icon&lt;/g1&gt; next to the soundcard name.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T092753Z" creationid="daryl" creationdate="20200921T092753Z">
+        <seg>Abre las entradas de tu tarjeta de audio haciendo clic en el &lt;g1&gt;icono de plus&lt;/g1&gt; al lado del nombre de la tarjeta.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4730,6 +4809,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053831Z" creationid="daryl" creationdate="20200918T053831Z">
         <seg>Opcional, pero recomendado</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Or put another way, do &lt;g1&gt;not&lt;/g1&gt; listen to your direct signal.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204538Z" creationid="daryl" creationdate="20200919T204538Z">
+        <seg>O dicho de otra manera, &lt;g1&gt;no&lt;/g1&gt; escuches tu señal directa.</seg>
       </tuv>
     </tu>
     <tu>
@@ -4782,10 +4869,10 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Ping servers in list to keep NAT port open (central server only)</seg>
+        <seg>Ping time!</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053045Z" creationid="daryl" creationdate="20200918T053045Z">
-        <seg>Envía ping a los servidores de la lista para mantener abierto el puerto NAT (solo servidor central)</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204510Z" creationid="daryl" creationdate="20200919T204510Z">
+        <seg>¡Tiempo Ping!</seg>
       </tuv>
     </tu>
     <tu>
@@ -4830,6 +4917,22 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Plug in your instrument/microphone and headphones</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070737Z" creationid="daryl" creationdate="20200921T070737Z">
+        <seg>Enchufa tu instrumento/micrófono y tus auriculares</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Plug the interface into a USB port on your computer</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070422Z" creationid="daryl" creationdate="20200921T070422Z">
+        <seg>Enchufa el interfaz en un puerto USB de tu ordenador</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Points to note</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054716Z" creationid="daryl" creationdate="20200918T054716Z">
@@ -4850,6 +4953,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054711Z" creationid="daryl" creationdate="20200918T054711Z">
         <seg>Validación de puertos</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Possible Improvements of the Installation Script for Jamulus</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083502Z" creationid="daryl" creationdate="20200921T083502Z">
+        <seg>Posibles mejoras para el script de instalación de Jamulus</seg>
       </tuv>
     </tu>
     <tu>
@@ -4922,6 +5033,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053820Z" creationid="daryl" creationdate="20200918T053820Z">
         <seg>R=`curl -s https://api.github.com/repos/corrados/jamulus/releases/latest | grep -oP '"tag_name": "\K(.*)(?=")'` &amp;&amp; wget https://github.com/corrados/jamulus/archive/$R.tar.gz &amp;&amp; tar -xvf $R.tar.gz</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Ready? Install Jamulus!</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204512Z" creationid="daryl" creationdate="20200919T204512Z">
+        <seg>¿Preparado/a? ¡Instala Jamulus!</seg>
       </tuv>
     </tu>
     <tu>
@@ -5054,6 +5173,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Run Jamulus on any computer using a USB stick (64-bit systems only). Checks your hardware and sets you up like a boss straight out of the box!</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204519Z" creationid="daryl" creationdate="20200919T204519Z">
+        <seg>Ejecuta Jamulus en cualquier ordenador utilizando un pendrive (solo sistemas de 64-bits). ¡Comprueba tu hardware y lo configura todo sin tener que hacer nada!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Running Jamulus with Multiple Audio Interfaces</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055543Z" creationid="daryl" creationdate="20200918T055543Z">
@@ -5142,14 +5269,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>See description in &lt;g1&gt;Server Setup&lt;/g1&gt;. Include a writable path where the files should be stored (in quotes if appropriate). Recording stops when server stops (last person leaves). If the server receives a &lt;g2&gt;SIGUSR2&lt;/g2&gt; signal it will toggle recording on/off. (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053120Z" creationid="daryl" creationdate="20200918T053120Z">
-        <seg>Ver descripción en &lt;g1&gt;Configuración del Servidor&lt;/g1&gt;. Incluye una ruta editable donde se deben guardar los archivos (entrecomillado si es apropiado). La grabación se detiene cuando se detiene el servidor (se marcha la última persona). Si el servidor recibe una señal &lt;g2&gt;SIGUSR2&lt;/g2&gt; conmutará la grabación entre encendida/apagada. (solo servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>See the &lt;g1&gt;Server Troubleshooting FAQ&lt;/g1&gt;</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052542Z" creationid="daryl" creationdate="20200918T052542Z">
@@ -5206,18 +5325,10 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Server location details in the format (see also &lt;g1&gt;QLocale&lt;/g1&gt;):</seg>
+        <seg>Server operators can also register with your custom central server so their servers can show up in your server list by setting it as their &lt;g1&gt;--centralserver&lt;/g1&gt; option.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053105Z" creationid="daryl" creationdate="20200918T053105Z">
-        <seg>Detalles de localización del servidor en el formato (ver también &lt;g1&gt;QLocale&lt;/g1&gt;):</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Server name, required for HTML status (do not confuse with "&lt;x1/&gt;name&lt;x2/&gt;" in &lt;g3&gt;-o&lt;/g3&gt;)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053030Z" creationid="daryl" creationdate="20200918T053021Z">
-        <seg>Nombre del servidor, requisito para estado HTML (no confundir con "&lt;x1/&gt;nombre&lt;x2/&gt;" en &lt;g3&gt;-o&lt;/g3&gt;)</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T063111Z" creationid="daryl" creationdate="20200921T063111Z">
+        <seg>Los operadores de servidores también pueden registrarse con tu servidor central personalizado para que los suyos aparezcan en tu lista de servidores, estableciéndolo con la opción de &lt;g1&gt;--centralserver&lt;/g1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5286,6 +5397,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Setting up hardware usually burns down to 4 points, although each setup is different.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070403Z" creationid="daryl" creationdate="20200921T070403Z">
+        <seg>Normalmente, configurar el hardware se reduce a 4 puntos, aunque cada equipo es diferente.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Settings</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -5306,22 +5425,6 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055455Z" creationid="daryl" creationdate="20200918T055455Z">
         <seg>Compartir partituras</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Short</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053016Z" creationid="daryl" creationdate="20200918T053016Z">
-        <seg>Corto</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Show a CC license to be accepted on a new connection  (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053057Z" creationid="daryl" creationdate="20200918T053057Z">
-        <seg>Muestra una licencia CC que cada nueva conexión debe aceptar (solo servidor)</seg>
       </tuv>
     </tu>
     <tu>
@@ -5370,6 +5473,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES">
         <seg>Nivel</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>So reading the &lt;g1&gt;DISTRO&lt;/g1&gt; and &lt;g2&gt;LINVERION&lt;/g2&gt; with the &lt;g3&gt;read&lt;/g3&gt; command might be the better distribution dependent improvement than an automated setting with &lt;g4&gt;lsb_release&lt;/g4&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T085009Z" creationid="daryl" creationdate="20200921T085009Z">
+        <seg>Así que leer &lt;g1&gt;DISTRO&lt;/g1&gt; y &lt;g2&gt;LINVERION&lt;/g2&gt; con el comando &lt;g3&gt;read&lt;/g3&gt; podría ser una mejora para la instalación dependiente de la distribución en lugar de una configuración automatizada con &lt;g4&gt;lsb_release&lt;/g4&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5478,6 +5589,24 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>Start Jack by pressing the &lt;g1&gt;Start-Button&lt;/g1&gt;
+You can &lt;g2&gt;Stop&lt;/g2&gt; Jack after Quitting Jamulus)</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082306Z" creationid="daryl" creationdate="20200921T082306Z">
+        <seg>Arranca Jack pulsando el botón de &lt;g1&gt;Start&lt;/g1&gt;
+Puedes &lt;g2&gt;Parar&lt;/g2&gt; Jack tras cerrar Jamulus)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Start Jamulus</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082831Z" creationid="daryl" creationdate="20200921T082831Z">
+        <seg>Arranca Jamulus</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>Start a Terminal session.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055053Z" creationid="daryl" creationdate="20200918T055053Z">
@@ -5486,34 +5615,10 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Start in server mode</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053121Z" creationid="daryl" creationdate="20200918T053121Z">
-        <seg>Arrancar en modo servidor</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Start minimized (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053135Z" creationid="daryl" creationdate="20200918T053135Z">
-        <seg>Arranca minimizado (solo servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Start with the simple stuff: make sure your instrument/microphone and headphones are connected to the correct sockets. Make sure no other applications like your browser, video conferencing tool etc. is also using your soundcard. You should shut those down when using Jamulus. If that all looks OK and the problem persists, it's likely there's an issue with your sound device settings. This will depend on your particular setup (platform, hardware, software and drivers), so it's best to ask on &lt;g1&gt;the forums&lt;/g1&gt; for guidance.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052858Z" creationid="daryl" creationdate="20200918T052858Z">
         <seg>Empieza por lo sencillo: asegúrate de que tu instrumento/micrófono y auriculares están conectados al puerto correcto. Asegúrate de que ninguna otra aplicación como el navegador, herramienta de videoconferencia, etc. no está utilizando la tarjeta de sonido. Deberías cerrar estos programas al utilizar Jamulus. Si todo parece estar bien y el problema persiste, es probable que haya algún problema con la configuración del dispositivo de audio. Esto dependerá de tu configuración particular (plataforma, hardware, software y drivers), así que es mejor preguntar en &lt;g1&gt;los foros&lt;/g1&gt; para solicitar ayuda.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Starts Jamulus in muted state (client only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053102Z" creationid="daryl" creationdate="20200918T053102Z">
-        <seg>Arranca Jamulus en estado muteado (solo cliente)</seg>
       </tuv>
     </tu>
     <tu>
@@ -5708,6 +5813,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>The Installation Script</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T080534Z" creationid="daryl" creationdate="20200921T080528Z">
+        <seg>El Script de Instalación</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>The Jamulus client is set by default for use with the Behringer X-Touch, which apparently sends Control Numbers starting at 70, when Jamulus' faders are zero-indexed, which means there's a -70 offset coded into the source code that turns that 70 Control Number into a 0 for the first fader, 71 into 1 for the next, etc.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055520Z" creationid="daryl" creationdate="20200918T055520Z">
@@ -5748,6 +5861,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>The challenge is, that &lt;g1&gt;lsb_release&lt;/g1&gt; command must be available on Linux system. On CentOS/Fedora based systems &lt;g2&gt;lsb_release&lt;/g2&gt; command is only available, if the &lt;g3&gt;lsb&lt;/g3&gt; core packages are installed. So the automated Linux version detected might no work.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T084209Z" creationid="daryl" creationdate="20200921T084209Z">
+        <seg>El reto es que el comando &lt;g1&gt;lsb_release&lt;/g1&gt; debe estar disponible en el sistema de Linux. En sistemas basados en CentOS/Fedora, el comando &lt;g2&gt;lsb_release&lt;/g2&gt; solo está disponible si están instalados los paquetes &lt;g3&gt;lsb&lt;/g3&gt;. Por lo que la detección automatizada de la versión de Linux puede no funcionar.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>The chat window shows a history of all chat messages.</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -5756,10 +5877,27 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>The following download and installation commands are aggregated in an installation script (see section &lt;g1&gt;"Bash Script for Download and Compile"&lt;/g1&gt;). Perform the following steps step by step if you want to adapt the installation script for a new Linux distribution. If everything runs fine add or adapt the successful list of commands to the installation script below and create a pull request to update the installation script for this repository.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T072623Z" creationid="daryl" creationdate="20200921T072623Z">
+        <seg>Los siguientes comandos de descarga e instalación están agregados en un script de instalación (ver la sección &lt;g1&gt;"Bash Script para Descargar y Compilar"&lt;/g1&gt;). Realiza los siguientes pasos uno a uno si quieres adaptar el script de instalación a una distribución de Linux nueva. Si todo va bien añade o adapta la lista de comandos al script de abajo y crea un "pull request" para actualizar el script de instalación de este repositorio.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>The following guide is for running Jamulus as a "pure" server on &lt;g1&gt;hardware without audio&lt;/g1&gt; (eg on a 3rd party/cloud host) and assumes Ubuntu/Debian distributions using systemd. We also have instructions for &lt;g2&gt;Raspberry Pi&lt;/g2&gt;, which rock too.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054945Z" creationid="daryl" creationdate="20200918T054945Z">
         <seg>La siguiente guía es para ejecutar Jamulus como un servidor "puro" en &lt;g1&gt;hardware sin audio&lt;/g1&gt; (por ej. en una máquina externa/host en la nube) y presupone el uso de distribuciones Ubuntu/Debian utilizando systemd. También tenemos instrucciones para &lt;g2&gt;Raspberry Pi&lt;/g2&gt;, que va genial.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>The following script call different installation commands dependent on the Linux distribution.
+The variable &lt;g1&gt;DISTRO&lt;/g1&gt; defines which commands are executed. Set the variable dependent on your Linux distribution you are using.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075322Z" creationid="daryl" creationdate="20200921T075117Z">
+        <seg>El siguiente script puede ejecutar diferentes comandos de instalación dependiendo de la distribución de Linux. La variable &lt;g1&gt;DISTRO&lt;/g1&gt; define qué comandos son ejecutados. Establece la variable dependiendo de la distribusión de Linux que estés utilizando.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5804,6 +5942,16 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>The script can ask in the very beginning for which linux distribution the installation script should be called.
+This can be tested with the command &lt;g1&gt;lsb_release&lt;/g1&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083612Z" creationid="daryl" creationdate="20200921T083612Z">
+        <seg>El script puede preguntar al principio qué distribución de Linux es aplicable.
+Esto se puede comprobar con el comando &lt;g1&gt;lsb_release&lt;/g1&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>The selected audio device could not be used because of the following error:</seg>
       </tuv>
       <tuv lang="es-ES">
@@ -5832,6 +5980,14 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
       </tuv>
       <tuv lang="es-ES">
         <seg>La tasa de subida o bajada is demasiado alta para el ancho de banda disponible de internet.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>The variable &lt;g1&gt;LINVERSION&lt;/g1&gt; is currently not used in the following script but it is just a demo how to use the version specific installation commands.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075805Z" creationid="daryl" creationdate="20200921T075805Z">
+        <seg>La variable &lt;g1&gt;LINVERSION&lt;/g1&gt; no se utiliza en el script siguiente pero es solo una demostración de cómo utilizar comandos de instalación dependientes de la versión.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5868,20 +6024,20 @@ En el archivo &lt;g1&gt;src/soundbase.cpp&lt;/g1&gt;, ve a la línea 290, elimin
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>This help text (client and server)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053047Z" creationid="daryl" creationdate="20200918T053047Z">
-        <seg>Este texto de ayuda (cliente y servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>This is an example Windows client installation with audio device &lt;g1&gt;Behringer U-CONTROL UCA202&lt;/g1&gt;.
 The following instructions might be similar with other audio devices.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053741Z" creationid="daryl" creationdate="20200918T053741Z">
         <seg>Este es un ejemplo de instalación de un cliente en Windows con un dispositivo de audio &lt;g1&gt;Behringer U-CONTROL UCA202&lt;/g1&gt;.
 Las siguientes instrucciones pueden ser similares para otros dispositivos de audio.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>This is obviously hard for singers and some acoustic musicians, but even if your connection is good, when players aren't listening to their &lt;g1&gt;own signal coming back from the server&lt;/g1&gt;, your synchronisation &lt;g2&gt;will&lt;/g2&gt; suffer. &lt;g3&gt;(For the avoidance of doubt: this has nothing to do with the "mute" controls in Jamulus.)&lt;/g3&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204540Z" creationid="daryl" creationdate="20200919T204540Z">
+        <seg>Obviamente esto es difícil para cantantes y al tocar algunos instrumentos acústicos, pero aunque tu conexión sea buena, si no escuchas tu &lt;g1&gt;propia señal que vuelve del servidor&lt;/g1&gt;, tu sincronización &lt;g2&gt;sufrirá&lt;/g2&gt;. &lt;g3&gt;(Para que quede claro: esto no tiene nada que ver con los controles de "mute" en Jamulus.)&lt;/g3&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -5918,10 +6074,18 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>This should be your public IP address (find that with &lt;g1&gt;Google&lt;/g1&gt;). Connect your own Jamulus client to your local IP address. Note that your public IP address can change - see the note on "dynamic DNS" in &lt;g2&gt;this guide&lt;/g2&gt;.</seg>
+        <seg>This should be your &lt;g1&gt;public&lt;/g1&gt; IP address (find that with &lt;g2&gt;Google&lt;/g2&gt;). Connect your &lt;g3&gt;own&lt;/g3&gt; Jamulus client to the &lt;g4&gt;local&lt;/g4&gt; IP address of your server (127.0.0.1 if it's on the same machine as your client). Note that your public IP address can change - see the note on "dynamic DNS" in &lt;g5&gt;this guide&lt;/g5&gt;.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T055342Z" creationid="daryl" creationdate="20200918T055342Z">
-        <seg>Tiene que ser tu dirección IP pública (encuéntralo con &lt;g1&gt;Google&lt;/g1&gt;). Conecta tu propio cliente Jamulus utilizando tu dirección IP local. Ten en cuenta que tu dirección IP pública puede cambiar - ver la nota sobre "DNS dinámica" en &lt;g2&gt;esta guía&lt;/g2&gt;.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T095647Z" creationid="daryl" creationdate="20200921T095647Z">
+        <seg>Tiene que ser tu dirección IP &lt;g1&gt;pública&lt;/g1&gt; (encuéntrala con &lt;g2&gt;Google&lt;/g2&gt;). Conecta tu &lt;g3&gt;propio&lt;/g3&gt; cliente Jamulus a la dirección IP &lt;g4&gt;local&lt;/g4&gt; de tu servidor (127.0.0.1 si está en la misma máquina que tu cliente). Ten en cuenta que tu dirección IP pública puede cambiar - ver la nota sobre "DNS dinámica" en &lt;g5&gt;esta guía&lt;/g5&gt;.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>This wiki is licensed under a &lt;g1&gt;Creative Commons Attribution-ShareAlike 4.0 International License&lt;/g1&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T061633Z" creationid="daryl" creationdate="20200921T061522Z">
+        <seg>Esta wiki está bajo una &lt;g1&gt;Licencia Creative Commons Atribución-CompartirIgual 4.0 Internacional&lt;/g1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -5942,9 +6106,9 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>To detect if CGN is the issue, go to your router's configuration screen (192.168.X.X) and look at the WAN Status page. If your listed IPv4 address does not match with the address you see &lt;g1&gt;here&lt;/g1&gt;, then this CGN may be enabled. Or if you experience problems such as being unable to &lt;g2&gt;connect to servers or an empty server list&lt;/g2&gt; this may also be an indicator that your ISP is the problem too.</seg>
+        <seg>To detect if CGN is the issue, go to your router's configuration screen (typically, 192.168.X.X) and look at the WAN Status page. If your listed IPv4 address does not match with the address you see &lt;g1&gt;here&lt;/g1&gt;, then this means CGN may be enabled. Or if you experience problems such as being unable to &lt;g2&gt;connect to servers or an empty server list&lt;/g2&gt; this may also be an indicator that your ISP is the problem too.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T055353Z" creationid="daryl" creationdate="20200918T055353Z">
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T095710Z" creationid="daryl" creationdate="20200921T095710Z">
         <seg>Para detectar si el problema está causado por CGN, ve a la pantalla de configuración de tu router (192.168.X.X) y consulta la página de WAN Status. Si tu dirección listada de IPv4 no concuerda con la dirección que ves &lt;g1&gt;aquí&lt;/g1&gt;, entonces puede que este CGN esté activado. O si experimentas problemas como no poder &lt;g2&gt;conectarte a servidores o una lista de servidores vacía&lt;/g2&gt; esto también puede indicar que el problema reside en tu operador de internet.</seg>
       </tuv>
     </tu>
@@ -5958,10 +6122,10 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>To fix the issue: if you are running a public server, try &lt;g1&gt;port forwarding&lt;/g1&gt;. If you are running a private server and are port forwarding already, contact your ISP support and request them to remove you from CGN and assign you a real WAN IP address because you want to host a server. If CGN is not the issue, you may need to ask your ISP to give you a WAN IP address (or fixed one to avoid using DDNS, if possible).</seg>
+        <seg>To fix the issue: if you are running a public server, try &lt;g1&gt;port forwarding&lt;/g1&gt;. If you are running a private server and are port forwarding already, contact your ISP support and request them to remove you from CGN and assign you a real WAN IP address because you want to host a server. If CGN is not the issue, you may need to ask your ISP to give you a WAN IP address (or fixed one to avoid using DDNS, if possible). If all else fails, consider hosting on a cloud platform (some providers do free trial periods).</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T055355Z" creationid="daryl" creationdate="20200918T055355Z">
-        <seg>Para arreglar el problema: si estás ejecutando un servidor público, prueba la &lt;g1&gt;validación de puertos&lt;/g1&gt;. Si estás ejecutando un servidor privado y ya has validado puertos, contacta con el soporte de tu operador y pide que te eliminen del CGN y te asignen una dirección WAN IP real porque quieres operar un servidor. Si el problema no es CGN, quizá tengas que pedir a tu operador que te asigne una dirección WAN IP (o una fija para evitar el uso de DDNS, si es posible).</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T095901Z" creationid="daryl" creationdate="20200921T095901Z">
+        <seg>Para arreglar el problema: si estás ejecutando un servidor público, prueba la &lt;g1&gt;validación de puertos&lt;/g1&gt;. Si estás ejecutando un servidor privado y ya has validado puertos, contacta con el soporte de tu operador y pide que te eliminen del CGN y te asignen una dirección WAN IP real porque quieres operar un servidor. Si el problema no es CGN, quizá tengas que pedir a tu operador que te asigne una dirección WAN IP (o una fija para evitar el uso de DDNS, si es posible). Si nada de esto funciona, considera utilizar una plataforma en la nube (algunos proveedores ofrecen periodos gratuitos de prueba).</seg>
       </tuv>
     </tu>
     <tu>
@@ -5978,6 +6142,14 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054858Z" creationid="daryl" creationdate="20200918T052544Z">
         <seg>Para hacer permanentes las conexiones de JACK, en Jack Control, abre el &lt;g1&gt;Patchbay&lt;/g1&gt;, añade todas las entradas y salidas disponibles (Añadir... &gt; Seleccionar cada Cliente &gt; Haz clic en Añadir Plug hasta que no quede ninguno) y haz las conexiones que quieras hacer permanentes. Esto normalmente implica conectar tanto las salidas de &lt;g2&gt;system&lt;/g2&gt; y &lt;g3&gt;voicemeeter&lt;/g3&gt; a la entrada de &lt;g4&gt;jamulus&lt;/g4&gt;, y la salida de &lt;g5&gt;jamulus&lt;/g5&gt; a la entrada de &lt;g6&gt;system&lt;/g6&gt;. Una vez hecho, guarda el esquema de Patchbay y &lt;g7&gt;Actívalo&lt;/g7&gt;. Ahora cada vez que arranques Jamulus y te conectes a un servidor, las conexiones en JACK deberían realizarse automáticamente.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>To run a server as a central server, it should be configured with &lt;g1&gt;--centralserver localhost&lt;/g1&gt; instead of any other value.  Generally also add &lt;g2&gt;--pingservers&lt;/g2&gt;.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T064002Z" creationid="daryl" creationdate="20200921T064002Z">
+        <seg>Para ejecutar un servidor como central, se debe configurar con &lt;g1&gt;--centralserver localhost&lt;/g1&gt; en lugar de cualquier otro valor. En general, también añade &lt;g2&gt;--pingservers&lt;/g2&gt;.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6018,6 +6190,14 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053858Z" creationid="daryl" creationdate="20200918T053858Z">
         <seg>Para utilizar este archivo configura el software con &lt;g1&gt;qmake "CONFIG+=noupcasename" Jamulus.pro&lt;/g1&gt; para asegurarte de que el nombre de destino de este software es jamulus en lugar de Jamulus.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>To view servers listed by a custom central server, musicians must enter the address in their client’s "Custom Central Server" settings field.  Musicians using a custom central server will then see a Connection Setup list which is managed by that central server.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T062814Z" creationid="daryl" creationdate="20200921T062302Z">
+        <seg>Para ver servidores listados por un servidor central personalizado, los músicos deben introducir la dirección en el campo "Servidor Central Personalisado" de su cliente. Los músicos que utilizan un servidor central personalizado verán entonces una lista en Configuración de Conexión que es gestionada por ese servidor central.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6086,14 +6266,6 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Use 64 samples frame size mode. Requires fast CPU to avoid dropouts, and more bandwidth if clients also connect with "Enable Small Network Buffers" option.  (server only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053042Z" creationid="daryl" creationdate="20200918T053042Z">
-        <seg>Utiliza modo 64 muestras. Requiere un procesador potente para evitar cortes, y más ancho de banda si los clientes también se conectan con la opcion de "Activar Buffers Pequeños". (Solo servidor)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Use Patchbay as described on Windows section to make connections permanent.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T054930Z" creationid="daryl" creationdate="20200918T054930Z">
@@ -6154,14 +6326,6 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055030Z" creationid="daryl" creationdate="20200918T055030Z">
         <seg>Ver los Registros</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
-        <seg>Welcome message on connect. Supports HTML and (inline) CSS formatting. It also accepts an external text file for more complex messages: eg: &lt;g1&gt;./Jamulus -s -n -w /path/to/jamulusWelcome.txt&lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053133Z" creationid="daryl" creationdate="20200918T053133Z">
-        <seg>Mensaje de bienvenida al conectarse. Soporta el formateo HTML y CSS (en línea). También acepta un archivo de texto externo para mensajes más complejos: Por ej.: &lt;g1&gt;./Jamulus -s -n -w /ruta/a/mensajeBienvenidaJamulus.txt&lt;/g1&gt;</seg>
       </tuv>
     </tu>
     <tu>
@@ -6254,9 +6418,9 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>When you're done, have a look at how to setup ASIO4All (scroll down) if you you're using that, and &lt;g1&gt;Hardware Setup&lt;/g1&gt;.</seg>
+        <seg>When you're done, have a look at how to setup ASIO4All (scroll down) if you you're using that, and afterwards at &lt;g1&gt;Hardware Setup&lt;/g1&gt;.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053930Z" creationid="daryl" creationdate="20200918T053930Z">
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T091848Z" creationid="daryl" creationdate="20200921T091848Z">
         <seg>Una vez hecho, mira cómo configurar ASIO4All (consulta abajo) si es lo que vas a utilizar, y la &lt;g1&gt;Configuración de Hardware&lt;/g1&gt;.</seg>
       </tuv>
     </tu>
@@ -6270,10 +6434,10 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Whitelist given IPs to register on serverlist of this server. Format: &lt;g1&gt;ip address 1;[ip address 2];[ip address 3]; ...&lt;/g1&gt; see &lt;g2&gt;#413&lt;/g2&gt; (central server only)</seg>
+        <seg>While using Jamulus, try to make sure that nothing else on your machine or your network is competing against it. Don't watch YouTube/Netflix, or have anything else running on the machine that you are using Jamulus on.</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053039Z" creationid="daryl" creationdate="20200918T053039Z">
-        <seg>Lista blanca con IPs para registrarse en la lista de servidores de este servidor. Formato: &lt;g1&gt;dirección IP 1;[dirección IP 2];[dirección IP 3]; ...&lt;/g1&gt; ver &lt;g2&gt;#413&lt;/g2&gt; (solo servidor central)</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204508Z" creationid="daryl" creationdate="20200919T204508Z">
+        <seg>Mientras utilizas Jamulus, intenta asegurarte de que no hay nada compitiendo con él en tu máquina o en tu red. No veas YouTube/Netflix, ni ejecutes nada más en el ordenador con el que utilizas Jamulus.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6294,14 +6458,6 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Window title and jack client name (client only)</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053141Z" creationid="daryl" creationdate="20200918T053141Z">
-        <seg>Título de ventana y nombre de cliente en Jack (solo cliente)</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <tuv lang="en-GB">
         <seg>Windows</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052543Z" creationid="daryl" creationdate="20200918T052543Z">
@@ -6314,6 +6470,18 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055457Z" creationid="daryl" creationdate="20200918T055457Z">
         <seg>Con los argumentos de línea de comando &lt;g1&gt;-m&lt;/g1&gt; y &lt;g2&gt;-a&lt;/g2&gt; se puede generar una página de información estadística del servidor en una página web.</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>With the &lt;g1&gt;lsb_release&lt;/g1&gt; command the command returns the distribution specific information about a Linux distro.
+With a &lt;g2&gt;grep&lt;/g2&gt; command with regular expression the variable &lt;g3&gt;DISTRO&lt;/g3&gt; and &lt;g4&gt;LINVERSION&lt;/g4&gt;.
+E.g. the Ubuntu based systems return with the command the following information.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083925Z" creationid="daryl" creationdate="20200921T083925Z">
+        <seg>Con el comando &lt;g1&gt;lsb_release&lt;/g1&gt; la terminal nos da información sobre la distribución de Linux.
+Con un comando &lt;g2&gt;grep&lt;/g2&gt; con expresión regular, la variable &lt;g3&gt;DISTRO&lt;/g3&gt; y &lt;g4&gt;LINVERSION&lt;/g4&gt;.
+Por ejemplo, en sistemas basados en Ubuntu se nos devuelve la siguiente información:</seg>
       </tuv>
     </tu>
     <tu>
@@ -6486,6 +6654,14 @@ Las siguientes instrucciones pueden ser similares para otros dispositivos de aud
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>You will need</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200919T204429Z" creationid="daryl" creationdate="20200919T204429Z">
+        <seg>Necesitarás</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>You will need to know the full path to the Jamulus application (example below) so that you can run the following command. It must be all on one line:</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055053Z" creationid="daryl" creationdate="20200918T055053Z">
@@ -6512,10 +6688,18 @@ Para más información consulta &lt;g1&gt;esta página de Soporte para Apple&lt;
     </tu>
     <tu>
       <tuv lang="en-GB">
-        <seg>Your server will be listed in the central server list that clients use by default. Musicians can then discover and connect to your server.</seg>
+        <seg>You're done! Have fun!</seg>
       </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T052640Z" creationid="daryl" creationdate="20200918T052640Z">
-        <seg>Tu servidor aparecerá en la lista del servidor central que los clientes utilizan por defecto. Los músicos ya pueden ver y conectarse a tu servidor.</seg>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T070857Z" creationid="daryl" creationdate="20200921T070857Z">
+        <seg> ¡Ya está! ¡Diviértete!</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>Your server will be listed in the &lt;g1&gt;central server&lt;/g1&gt; list that clients use by default. Musicians can then discover and connect to your server.  It is not necessary to run as a public server.  See &lt;g2&gt;Private&lt;/g2&gt;, below.</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T062242Z" creationid="daryl" creationdate="20200921T062141Z">
+        <seg>Tu servidor aparecerá en la lista del &lt;g1&gt;servidor central&lt;/g1&gt; que los clientes utilizan por defecto. Los músicos ya pueden ver y conectarse a tu servidor. No es estricamente necesario ejecutarlo como un servidor público. Ver &lt;g2&gt;Privado&lt;/g2&gt;, abajo.</seg>
       </tuv>
     </tu>
     <tu>
@@ -6771,6 +6955,22 @@ directory jamulus/windows/ASIOSDK2/common exists</seg>
     </tu>
     <tu>
       <tuv lang="en-GB">
+        <seg>execute the command &lt;g1&gt;Jamulus&lt;/g1&gt; you will start the Jamulus Client</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T083035Z" creationid="daryl" creationdate="20200921T083035Z">
+        <seg>ejecuta el comando &lt;g1&gt;Jamulus&lt;/g1&gt; para iniciar el Cliente de Jamulus</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>execute the command &lt;g1&gt;qjackctl&lt;/g1&gt; you will see the &lt;g2&gt;Jack Audio Connection Kit&lt;/g2&gt;</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T082019Z" creationid="daryl" creationdate="20200921T082019Z">
+        <seg>ejecuta el comando &lt;g1&gt;qjackctl&lt;/g1&gt;. Verás la aplicación &lt;g2&gt;Jack Audio Connection Kit&lt;/g2&gt;</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
         <seg>git pull
 git checkout [RELEASE]</seg>
       </tuv>
@@ -6793,6 +6993,20 @@ git checkout [VERSIÓN]</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T055426Z" creationid="daryl" creationdate="20200918T055426Z">
         <seg>Interfaz iConnectivity AUDIO4+ (USB)</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>if [ "$LINVERSION"  = "18.4" ]
+then
+    echo "Perform Installation Specifics for $DISTRO Version $DISTRO" 
+fi</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T075647Z" creationid="daryl" creationdate="20200921T075647Z">
+        <seg>if [ "$LINVERSION"  = "18.4" ]
+then
+    echo "Perform Installation Specifics for $DISTRO Version $DISTRO" 
+fi</seg>
       </tuv>
     </tu>
     <tu>
@@ -6973,6 +7187,70 @@ Nota: Pulsa &lt;g1&gt;q&lt;/g1&gt; para salir del estado del servicio.</seg>
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T053159Z" creationid="daryl" creationdate="20200918T053159Z">
         <seg>xcodebuild build</seg>
+      </tuv>
+    </tu>
+    <tu>
+      <tuv lang="en-GB">
+        <seg>| Short | Long name | &lt;g1&gt;[...]&lt;/g1&gt; means optional parameter | |
+|-------|-----------|----------------------------------|-|
+|    -a |--servername     | Server name, required for HTML status (do not confuse with "&lt;x2/&gt;name&lt;x3/&gt;" in &lt;g4&gt;-o&lt;/g4&gt;) | (server only) |
+|    -c |--connect        | Connect to given server address on startup, format &lt;g5&gt;address[:port]&lt;/g5&gt; | (client only) |
+|    -d |--discononquit   | Disconnect all clients on quit | (server only) |
+|    -e |--centralserver  | Makes the server public. | (server only) &lt;g6&gt;See note&lt;/g6&gt;. |
+|    -f |--listfilter     | Whitelist given IPs to register on serverlist of this server. | (central server only) &lt;g7&gt;See note&lt;/g7&gt;. |
+|    -F |--fastupdate     | Use 64 samples frame size mode. Requires fast CPU to avoid dropouts, and more bandwidth if clients also connect with "Enable Small Network Buffers" option. | (server only) |
+|    -g |--pingservers    | Ping servers in list to keep NAT port open | (central server only) (And &lt;g8&gt;see this note&lt;/g8&gt; for why) |
+| -h,-? |--help           | This help text | (client and server) |
+|    -i |--inifile        | Initialization file name | (client (always) and server (with GUI)) |
+|    -j |--nojackconnect  | Disable auto Jack connections | (client only) |
+|    -l |--log            | Enable logging, set file name | (server only) |
+|    -L |--licence        | Show a CC license to be accepted on a new connection | (server only) |
+|    -m |--htmlstatus     | Enable HTML status file, set file name | (server only) |
+|    -M |--mutestream     | Starts Jamulus in muted state | (client only) |
+|    -n |--nogui          | Disable GUI | (client and server) |
+|    -o |--serverinfo     | Server location details in the format (see also &lt;g9&gt;QLocale&lt;/g9&gt;): &lt;x10/&gt;&lt;g11&gt;[name];[city];[[country as QLocale ID]]; ...&lt;/g11&gt; &lt;x12/&gt;&lt;g13&gt;[server1 address];[server1 name];[server1 city];[server1 country as QLocale ID]; ...&lt;/g13&gt; &lt;x14/&gt;&lt;g15&gt;[server2 address]; ...&lt;/g15&gt; | (first for any server; additional for central server only - &lt;g16&gt;see note&lt;/g16&gt;.) |
+|    -p |--port           | Local UDP port number. Default is 22124 | (server only) |
+|    -R |--recording      | Include a writable path where the files should be stored (in quotes if appropriate). &lt;x17/&gt;Recording stops when server stops (last person leaves). &lt;x18/&gt;If the server receives a &lt;g19&gt;SIGUSR1&lt;/g19&gt; signal during a recording, it will start a new recording. &lt;x20/&gt;If the server receives a &lt;g21&gt;SIGUSR2&lt;/g21&gt; signal, it will toggle recording enabled on/off. &lt;x22/&gt;There are equivalent GUI controls. | (server only) See description in &lt;g23&gt;Server Setup&lt;/g23&gt;. |
+|       | --norecord      | Start recorder with recording disabled (3.5.11+) | (server only) |
+|    -s |--server         | Start in server mode | (server only) &lt;g24&gt;See note&lt;/g24&gt; |
+|    -t |--notranslation  | Disable translations | (client and server) |
+|    -T |--multithreading | Enable multithreading | (server only) |
+|    -u |--numchannels    | Maximum number of channels. Default is 10, maximum is 50 | (server only) |
+|    -w |--welcomemessage | Welcome message on connect. Supports HTML and (inline) CSS formatting. It also accepts an external text file for more complex messages: eg: &lt;g25&gt;./Jamulus -s -n -w /path/to/jamulusWelcome.txt&lt;/g25&gt; | (server only) |
+|    -z |--startminimized | Start minimized | (server only) |
+|       |--ctrlmidich     | MIDI controller channel to listen on | (client only) see &lt;g26&gt;Tips &amp; Tricks&lt;/g26&gt; |
+|       |--clientname     | Window title and jack client name | (client only) |</seg>
+      </tuv>
+      <tuv lang="es-ES" changeid="daryl" changedate="20200921T061422Z" creationid="daryl" creationdate="20200921T061422Z">
+        <seg>| Short | Long name | &lt;g1&gt;[...]&lt;/g1&gt; means optional parameter | |
+|-------|-----------|----------------------------------|-|
+|    -a |--servername     | Server name, required for HTML status (do not confuse with "&lt;x2/&gt;name&lt;x3/&gt;" in &lt;g4&gt;-o&lt;/g4&gt;) | (server only) |
+|    -c |--connect        | Connect to given server address on startup, format &lt;g5&gt;address[:port]&lt;/g5&gt; | (client only) |
+|    -d |--discononquit   | Disconnect all clients on quit | (server only) |
+|    -e |--centralserver  | Makes the server public. | (server only) &lt;g6&gt;See note&lt;/g6&gt;. |
+|    -f |--listfilter     | Whitelist given IPs to register on serverlist of this server. | (central server only) &lt;g7&gt;See note&lt;/g7&gt;. |
+|    -F |--fastupdate     | Use 64 samples frame size mode. Requires fast CPU to avoid dropouts, and more bandwidth if clients also connect with "Enable Small Network Buffers" option. | (server only) |
+|    -g |--pingservers    | Ping servers in list to keep NAT port open | (central server only) (And &lt;g8&gt;see this note&lt;/g8&gt; for why) |
+| -h,-? |--help           | This help text | (client and server) |
+|    -i |--inifile        | Initialization file name | (client (always) and server (with GUI)) |
+|    -j |--nojackconnect  | Disable auto Jack connections | (client only) |
+|    -l |--log            | Enable logging, set file name | (server only) |
+|    -L |--licence        | Show a CC license to be accepted on a new connection | (server only) |
+|    -m |--htmlstatus     | Enable HTML status file, set file name | (server only) |
+|    -M |--mutestream     | Starts Jamulus in muted state | (client only) |
+|    -n |--nogui          | Disable GUI | (client and server) |
+|    -o |--serverinfo     | Server location details in the format (see also &lt;g9&gt;QLocale&lt;/g9&gt;): &lt;x10/&gt;&lt;g11&gt;[name];[city];[[country as QLocale ID]]; ...&lt;/g11&gt; &lt;x12/&gt;&lt;g13&gt;[server1 address];[server1 name];[server1 city];[server1 country as QLocale ID]; ...&lt;/g13&gt; &lt;x14/&gt;&lt;g15&gt;[server2 address]; ...&lt;/g15&gt; | (first for any server; additional for central server only - &lt;g16&gt;see note&lt;/g16&gt;.) |
+|    -p |--port           | Local UDP port number. Default is 22124 | (server only) |
+|    -R |--recording      | Include a writable path where the files should be stored (in quotes if appropriate). &lt;x17/&gt;Recording stops when server stops (last person leaves). &lt;x18/&gt;If the server receives a &lt;g19&gt;SIGUSR1&lt;/g19&gt; signal during a recording, it will start a new recording. &lt;x20/&gt;If the server receives a &lt;g21&gt;SIGUSR2&lt;/g21&gt; signal, it will toggle recording enabled on/off. &lt;x22/&gt;There are equivalent GUI controls. | (server only) See description in &lt;g23&gt;Server Setup&lt;/g23&gt;. |
+|       | --norecord      | Start recorder with recording disabled (3.5.11+) | (server only) |
+|    -s |--server         | Start in server mode | (server only) &lt;g24&gt;See note&lt;/g24&gt; |
+|    -t |--notranslation  | Disable translations | (client and server) |
+|    -T |--multithreading | Enable multithreading | (server only) |
+|    -u |--numchannels    | Maximum number of channels. Default is 10, maximum is 50 | (server only) |
+|    -w |--welcomemessage | Welcome message on connect. Supports HTML and (inline) CSS formatting. It also accepts an external text file for more complex messages: eg: &lt;g25&gt;./Jamulus -s -n -w /path/to/jamulusWelcome.txt&lt;/g25&gt; | (server only) |
+|    -z |--startminimized | Start minimized | (server only) |
+|       |--ctrlmidich     | MIDI controller channel to listen on | (client only) see &lt;g26&gt;Tips &amp; Tricks&lt;/g26&gt; |
+|       |--clientname     | Window title and jack client name | (client only) |</seg>
       </tuv>
     </tu>
     <tu>
@@ -7288,16 +7566,6 @@ Mar 26 11:52:35 oddjob jamulus[1308]:  *** Under the GNU General Public License 
     </tu>
     <tu>
       <prop type="file">jamulus.wiki/Getting-Started.md</prop>
-      <prop type="id">tu4_0</prop>
-      <tuv lang="en-GB">
-        <seg>A PC with either Windows 10, MacBook/iMac OS X El Capitan (v10.11) or higher, or Linux.</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200916T071830Z" creationid="daryl" creationdate="20200915T152501Z">
-        <seg>Un PC bien con Windows 10, MacBook/iMac OS X El Capitan (v10.11) o posterior, o Linux.</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">jamulus.wiki/Getting-Started.md</prop>
       <prop type="id">tu5_0</prop>
       <tuv lang="en-GB">
         <seg>Headphones to prevent echo or feedback (particularly if singing or playing acoustic instruments)</seg>
@@ -7414,26 +7682,6 @@ Mar 26 11:52:35 oddjob jamulus[1308]:  *** Under the GNU General Public License 
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200918T052218Z" creationid="daryl" creationdate="20200918T052218Z">
         <seg>&lt;g1&gt;Inicio&lt;/g1&gt; \&gt; &lt;g2&gt;Uso de Jamulus&lt;/g2&gt; \&gt; Instalación en Windows</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">jamulus.wiki/Installation-for-Linux.md</prop>
-      <prop type="id">tu3_0</prop>
-      <tuv lang="en-GB">
-        <seg>&lt;g1&gt;Right now, we don't have any official packages available for Jamulus, but compiling the sources is quite easy.&lt;/g1&gt;</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053812Z" creationid="daryl" creationdate="20200918T052222Z">
-        <seg>&lt;g1&gt;Ahora mismo no tenemos paquetes oficiales disponibles para Jamulus, pero compilar las fuentes es bastante sencillo.&lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">jamulus.wiki/Installation-for-Linux.md</prop>
-      <prop type="id">tu4_0</prop>
-      <tuv lang="en-GB">
-        <seg>Get Jamulus</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200918T053816Z" creationid="daryl" creationdate="20200918T052303Z">
-        <seg>Obtén Jamulus</seg>
       </tuv>
     </tu>
     <tu>
@@ -7614,16 +7862,6 @@ Mar 26 11:52:35 oddjob jamulus[1308]:  *** Under the GNU General Public License 
       </tuv>
       <tuv lang="es-ES" changeid="daryl" changedate="20200904T084101Z" creationid="daryl" creationdate="20200904T084101Z">
         <seg>&lt;g1&gt;Si tienes un par de minutos, por favor &lt;g2&gt;rellena nuestra encuesta anónima (inglés).&lt;/g2&gt;&lt;/g1&gt;</seg>
-      </tuv>
-    </tu>
-    <tu>
-      <prop type="file">jamulus.wiki/_Footer.md</prop>
-      <prop type="id">tu8_0</prop>
-      <tuv lang="en-GB">
-        <seg>This wiki is licensed under a &lt;g1&gt;Creative Commons Attribution 4.0 International License&lt;/g1&gt;.</seg>
-      </tuv>
-      <tuv lang="es-ES" changeid="daryl" changedate="20200916T072950Z" creationid="daryl" creationdate="20200916T072950Z">
-        <seg>Esta wiki está bajo una &lt;g1&gt;Licencia Creative Commons Atribución 4.0 Internacional&lt;/g1&gt;.</seg>
       </tuv>
     </tu>
     <tu>
