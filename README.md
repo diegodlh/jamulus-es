@@ -1,4 +1,7 @@
 # jamulus-es-wiki
+
+**Octubre 2020**: Nos mudamos a https://jamulus.io/es/
+
 Este repositorio aloja la versión en español de la wiki de Jamulus. Ésta es fundamentalmente una traducción de la [documentación oficial en inglés](https://github.com/corrados/jamulus/wiki), gentilmente contribuida por el usuario @ignotus666, quien la mantiene junto a otrxs colaboradrxs.
 
 Esto fue discutido [acá](https://github.com/corrados/jamulus/issues/77#issuecomment-687216471).
